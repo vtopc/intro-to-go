@@ -1,4 +1,4 @@
-FROM envoyproxy/envoy-dev:latest
+FROM envoyproxy/envoy-dev:d00985acb839c00f4ac5d686061f10d3093c4a81
 
 COPY ./envoy-proxy.yaml /etc/envoy-proxy.yaml
 COPY ./grpc-server/gen/descriptors.pb /protos/descriptors.pb
