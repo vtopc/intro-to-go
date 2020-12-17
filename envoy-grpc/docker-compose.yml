@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  grpc-server:
+    image: hello
+    build:
+      context: "grpc-server"
+      dockerfile: Dockerfile
+    environment:
+      - ADDRESS=:50051
+    ports:
+      - "50051:50051"
+    networks:
+      envoymesh:
+        aliases:
+          - kv-backend-service
+
+  grpc-server-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile-envoy
+    networks:
+      envoymesh:
+        aliases:
+          - kv-backend-proxy
+    ports:
+      - "8080:8080"
+
+networks:
+  envoymesh: {}

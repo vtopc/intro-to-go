@@ -1,0 +1,8 @@
+FROM envoyproxy/envoy-dev:latest
+
+COPY ./envoy-proxy.yaml /etc/envoy-proxy.yaml
+COPY ./grpc-server/gen/descriptors.pb /protos/descriptors.pb
+
+RUN chmod go+r /etc/envoy-proxy.yaml
+
+CMD ["/usr/local/bin/envoy", "-c", "/etc/envoy-proxy.yaml", "--service-cluster", "backend-proxy"]

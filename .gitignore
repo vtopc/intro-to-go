@@ -1,0 +1,8 @@
+# IDEs:
+/.idea/
+/.vscode/
+
+.DS_Store
+
+/envoy-grpc/grpc-server/gen/
+/envoy-grpc/grpc-server/coverage.txt
