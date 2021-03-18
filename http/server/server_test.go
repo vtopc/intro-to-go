@@ -27,7 +27,7 @@ func TestServerTimeout(t *testing.T) {
 		Timeout: 20 * time.Second,
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://"+srv.Addr+"/foo", nil)
