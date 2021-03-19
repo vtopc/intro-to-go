@@ -35,7 +35,7 @@ func TestServerTimeout(t *testing.T) {
 
 	resp, err := client.Do(req)
 	t.Logf("resp: %+v", resp)
-	require.EqualError(t, err, `Get "http://127.0.0.1:8080/foo": EOF`)
+	require.EqualError(t, err, `Get "http://127.0.0.1:8080/foo": EOF`) // http.Server.WriteTimeout
 
 	// assert.Equal(t, http.StatusOK, resp.StatusCode)
 }
