@@ -14,6 +14,9 @@ import (
 func TestServerTimeout(t *testing.T) {
 	srv := NewServer(http.HandlerFunc(slowHandler))
 
+	// test http.Server.WriteTimeout:
+	srv.WriteTimeout = 1 * time.Second
+
 	// start http server in background since it's blocking:
 	go func() {
 		log.Print("starting http server on ", srv.Addr)
@@ -35,7 +38,7 @@ func TestServerTimeout(t *testing.T) {
 
 	resp, err := client.Do(req)
 	t.Logf("resp: %+v", resp)
-	require.EqualError(t, err, `Get "http://127.0.0.1:8080/foo": EOF`) // http.Server.WriteTimeout
+	require.EqualError(t, err, `Get "http://127.0.0.1:8080/foo": EOF`)
 
 	// assert.Equal(t, http.StatusOK, resp.StatusCode)
 }
