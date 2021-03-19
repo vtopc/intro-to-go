@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestServerTimeout(t *testing.T) {
+func TestServerWriteTimeout(t *testing.T) {
 	srv := NewServer(http.HandlerFunc(slowHandler))
 
 	// test http.Server.WriteTimeout:
