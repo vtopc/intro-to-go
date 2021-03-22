@@ -1,6 +1,8 @@
 package server
 
 import (
+	"context"
+	"errors"
 	"net/http"
 	"time"
 )
@@ -14,4 +16,41 @@ func NewServer(handler http.Handler) *http.Server {
 		ReadHeaderTimeout: 180 * time.Second,
 		WriteTimeout:      180 * time.Second,
 	}
+}
+
+// TimeoutMiddleware is kinda http.TimeoutHandler, but returns 504 instead 503.
+// TODO: rewrite to http.TimeoutHandler?
+func TimeoutMiddleware(h http.Handler, timeout time.Duration) http.Handler {
+	return http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			ctx, cancel := context.WithTimeout(r.Context(), timeout) // context.DeadlineExceeded
+			defer cancel()
+			r = r.WithContext(ctx)
+
+			done := make(chan struct{})
+
+			go func() {
+				defer close(done)
+
+				h.ServeHTTP(w, r) // call original
+			}()
+
+			select {
+			case <-ctx.Done():
+				if errors.Is(ctx.Err(), context.DeadlineExceeded) ||
+					errors.Is(ctx.Err(), context.Canceled) {
+
+					w.WriteHeader(http.StatusGatewayTimeout)
+				} else {
+					w.WriteHeader(http.StatusInternalServerError)
+				}
+
+				_, _ = w.Write([]byte(ctx.Err().Error()))
+
+				// case <-done:
+				// 	// all good
+				// 	return
+			}
+		},
+	)
 }
