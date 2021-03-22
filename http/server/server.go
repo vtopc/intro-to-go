@@ -30,9 +30,8 @@ func TimeoutMiddleware(h http.Handler, timeout time.Duration) http.Handler {
 			done := make(chan struct{})
 
 			go func() {
-				defer close(done)
-
 				h.ServeHTTP(w, r) // call original
+				close(done)
 			}()
 
 			select {
