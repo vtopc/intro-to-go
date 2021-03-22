@@ -126,6 +126,7 @@ func asyncSlowHandler(w http.ResponseWriter, r *http.Request) {
 
 	select {
 	case <-r.Context().Done():
+		log.Print("asyncSlowHandler: cancelling")
 		return
 
 	// doing something slow:
