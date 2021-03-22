@@ -48,7 +48,7 @@ func TimeoutMiddleware(h http.Handler, timeout time.Duration) http.Handler {
 				_, _ = w.Write([]byte(err.Error()))
 
 			case <-done:
-				// all good
+				// all good(handler finished)
 				return
 			}
 		},
