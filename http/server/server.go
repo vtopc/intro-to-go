@@ -37,15 +37,16 @@ func TimeoutMiddleware(h http.Handler, timeout time.Duration) http.Handler {
 
 			select {
 			case <-ctx.Done():
-				if errors.Is(ctx.Err(), context.DeadlineExceeded) ||
-					errors.Is(ctx.Err(), context.Canceled) {
+				err := ctx.Err()
+				if errors.Is(err, context.DeadlineExceeded) ||
+					errors.Is(err, context.Canceled) {
 
 					w.WriteHeader(http.StatusGatewayTimeout)
 				} else {
 					w.WriteHeader(http.StatusInternalServerError)
 				}
 
-				_, _ = w.Write([]byte(ctx.Err().Error()))
+				_, _ = w.Write([]byte(err.Error()))
 
 			case <-done:
 				// all good
