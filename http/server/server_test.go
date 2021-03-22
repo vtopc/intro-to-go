@@ -13,6 +13,7 @@ import (
 
 func TestServerWriteTimeout(t *testing.T) {
 	srv := NewServer(http.HandlerFunc(slowHandler))
+	defer srv.Close()
 
 	// test http.Server.WriteTimeout:
 	srv.WriteTimeout = 1 * time.Second
@@ -44,7 +45,7 @@ func TestServerWriteTimeout(t *testing.T) {
 }
 
 func slowHandler(w http.ResponseWriter, r *http.Request) {
-	log.Print("got ", r.Method, r.URL, " request")
+	log.Print("got ", r.Method, " ", r.URL, " request")
 
 	time.Sleep(10 * time.Second)
 

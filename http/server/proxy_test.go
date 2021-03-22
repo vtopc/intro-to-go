@@ -13,6 +13,7 @@ import (
 
 func TestTransportResponseHeaderTimeout(t *testing.T) {
 	srv := NewServer(http.HandlerFunc(slowHandler))
+	defer srv.Close()
 
 	// start http server in background since it's blocking:
 	go func() {

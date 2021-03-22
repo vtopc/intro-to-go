@@ -13,6 +13,22 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var transport = &http.Transport{
+	ResponseHeaderTimeout: 60 * time.Second,
+
+	// defaults:
+	Proxy: http.ProxyFromEnvironment,
+	DialContext: (&net.Dialer{
+		Timeout:   30 * time.Second,
+		KeepAlive: 30 * time.Second,
+	}).DialContext,
+	ForceAttemptHTTP2:     true,
+	MaxIdleConns:          100,
+	IdleConnTimeout:       90 * time.Second,
+	TLSHandshakeTimeout:   10 * time.Second,
+	ExpectContinueTimeout: 1 * time.Second,
+}
+
 func TestTimeoutMiddleware(t *testing.T) {
 	tests := map[string]struct {
 		timeout        time.Duration
@@ -42,22 +58,6 @@ func TestTimeoutMiddleware(t *testing.T) {
 
 			// workaround to start srv:
 			runtime.Gosched()
-
-			transport := &http.Transport{
-				ResponseHeaderTimeout: 60 * time.Second,
-
-				// defaults:
-				Proxy: http.ProxyFromEnvironment,
-				DialContext: (&net.Dialer{
-					Timeout:   30 * time.Second,
-					KeepAlive: 30 * time.Second,
-				}).DialContext,
-				ForceAttemptHTTP2:     true,
-				MaxIdleConns:          100,
-				IdleConnTimeout:       90 * time.Second,
-				TLSHandshakeTimeout:   10 * time.Second,
-				ExpectContinueTimeout: 1 * time.Second,
-			}
 
 			req, err := http.NewRequest(http.MethodGet, "http://"+srv.Addr+"/foo", nil)
 			require.NoError(t, err)
@@ -105,22 +105,6 @@ func TestTimeoutHandler(t *testing.T) {
 			// workaround to start srv:
 			runtime.Gosched()
 
-			transport := &http.Transport{
-				ResponseHeaderTimeout: 60 * time.Second,
-
-				// defaults:
-				Proxy: http.ProxyFromEnvironment,
-				DialContext: (&net.Dialer{
-					Timeout:   30 * time.Second,
-					KeepAlive: 30 * time.Second,
-				}).DialContext,
-				ForceAttemptHTTP2:     true,
-				MaxIdleConns:          100,
-				IdleConnTimeout:       90 * time.Second,
-				TLSHandshakeTimeout:   10 * time.Second,
-				ExpectContinueTimeout: 1 * time.Second,
-			}
-
 			req, err := http.NewRequest(http.MethodGet, "http://"+srv.Addr+"/foo", nil)
 			require.NoError(t, err)
 
@@ -138,7 +122,7 @@ func TestTimeoutHandler(t *testing.T) {
 }
 
 func asyncSlowHandler(w http.ResponseWriter, r *http.Request) {
-	log.Print("got ", r.Method, r.URL, " request")
+	log.Print("got ", r.Method, " ", r.URL, " request")
 
 	select {
 	case <-r.Context().Done():
