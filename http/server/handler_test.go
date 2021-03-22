@@ -42,10 +42,6 @@ func TestTimeoutMiddleware(t *testing.T) {
 			// workaround to start srv:
 			runtime.Gosched()
 
-			// client := &http.Client{
-			// 	Timeout: 20 * time.Second,
-			// }
-
 			transport := &http.Transport{
 				ResponseHeaderTimeout: 60 * time.Second,
 
@@ -102,10 +98,6 @@ func TestTimeoutHandler(t *testing.T) {
 
 			// workaround to start srv:
 			runtime.Gosched()
-
-			// client := &http.Client{
-			// 	Timeout: 20 * time.Second,
-			// }
 
 			transport := &http.Transport{
 				ResponseHeaderTimeout: 60 * time.Second,
