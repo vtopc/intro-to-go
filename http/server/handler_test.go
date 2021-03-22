@@ -1,6 +1,7 @@
 package server
 
 import (
+	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -64,7 +65,12 @@ func TestTimeoutMiddleware(t *testing.T) {
 			resp, err := transport.RoundTrip(req)
 			t.Logf("resp: %+v", resp)
 			require.NoError(t, err)
+			defer resp.Body.Close()
 			assert.Equal(t, tt.expectedStatus, resp.StatusCode)
+
+			b, err := ioutil.ReadAll(resp.Body)
+			require.NoError(t, err)
+			t.Logf("body: %s", b)
 		})
 	}
 }
@@ -121,7 +127,12 @@ func TestTimeoutHandler(t *testing.T) {
 			resp, err := transport.RoundTrip(req)
 			t.Logf("resp: %+v", resp)
 			require.NoError(t, err)
+			defer resp.Body.Close()
 			assert.Equal(t, tt.expectedStatus, resp.StatusCode)
+
+			b, err := ioutil.ReadAll(resp.Body)
+			require.NoError(t, err)
+			t.Logf("body: %s", b)
 		})
 	}
 }
