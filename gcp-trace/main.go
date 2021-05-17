@@ -55,7 +55,7 @@ func main() {
 		},
 	}
 
-	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	handler := func(w http.ResponseWriter, r *http.Request) {
 		// The trace ID from the incoming request will be
 		// propagated to the outgoing request.
 		req, _ := http.NewRequestWithContext(
@@ -73,8 +73,8 @@ func main() {
 
 		// Because we don't read the resp.Body, need to manually call Close().
 		_ = resp.Body.Close()
-	})
-	http.Handle("/foo", handler)
+	}
+	http.Handle("/foo", http.HandlerFunc(handler))
 
 	port := os.Getenv("PORT")
 	if port == "" {
