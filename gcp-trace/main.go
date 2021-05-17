@@ -56,11 +56,14 @@ func main() {
 	}
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		req, _ := http.NewRequest(http.MethodGet, "https://www.google.com", nil)
-
 		// The trace ID from the incoming request will be
 		// propagated to the outgoing request.
-		req = req.WithContext(r.Context())
+		req, _ := http.NewRequestWithContext(
+			r.Context(),
+			http.MethodGet,
+			"https://www.google.com",
+			nil,
+		)
 
 		// The outgoing request will be traced with r's trace ID.
 		resp, err := client.Do(req)
