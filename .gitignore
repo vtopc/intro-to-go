@@ -6,3 +6,5 @@
 
 /envoy-grpc/grpc-server/gen/
 /envoy-grpc/grpc-server/coverage.txt
+
+/gcp-trace/creds.json
