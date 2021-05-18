@@ -73,6 +73,8 @@ func main() {
 
 		// Because we don't read the resp.Body, need to manually call Close().
 		_ = resp.Body.Close()
+
+		_, _ = w.Write([]byte("bar"))
 	}
 	http.Handle("/foo", http.HandlerFunc(handler))
 
