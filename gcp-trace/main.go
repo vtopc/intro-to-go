@@ -56,6 +56,9 @@ func main() {
 	}
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
+		span := trace.FromContext(r.Context())
+		w.Header().Set("X-Trace-Id", span.SpanContext().TraceID.String())
+
 		// The trace ID from the incoming request will be
 		// propagated to the outgoing request.
 		req, _ := http.NewRequestWithContext(
