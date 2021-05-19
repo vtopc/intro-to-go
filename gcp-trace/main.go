@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// [START trace_setup_go_quickstart]
-
-// Sample trace_quickstart traces incoming and outgoing requests.
 package main
 
 import (
@@ -29,6 +26,31 @@ import (
 )
 
 func main() {
+	registerTrace()
+
+	router := http.NewServeMux()
+	router.Handle("/foo", http.HandlerFunc(handler))
+
+	// Use an ochttp.Handler in order to instrument OpenCensus for incoming
+	// requests.
+	wrappedHandler := &ochttp.Handler{
+		// Use the Google Cloud propagation format.
+		Propagation: &propagation.HTTPFormat{},
+		Handler:     router,
+	}
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	log.Printf("Listening on port %s", port)
+
+	if err := http.ListenAndServe(":"+port, wrappedHandler); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func registerTrace() {
 	// Create and register a OpenCensus Stackdriver Trace exporter.
 	exporter, err := stackdriver.NewExporter(stackdriver.Options{
 		ProjectID: os.Getenv("GOOGLE_CLOUD_PROJECT"),
@@ -47,53 +69,4 @@ func main() {
 	// with significant traffic: a new trace will be started and exported for
 	// every request.
 	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
-
-	client := &http.Client{
-		Transport: &ochttp.Transport{
-			// Use Google Cloud propagation format.
-			Propagation: &propagation.HTTPFormat{},
-		},
-	}
-
-	handler := func(w http.ResponseWriter, r *http.Request) {
-		span := trace.FromContext(r.Context())
-		w.Header().Set("X-Trace-Id", span.SpanContext().TraceID.String())
-
-		// The trace ID from the incoming request will be
-		// propagated to the outgoing request.
-		req, _ := http.NewRequestWithContext(
-			r.Context(),
-			http.MethodGet,
-			"https://www.google.com",
-			nil,
-		)
-
-		// The outgoing request will be traced with r's trace ID.
-		resp, err := client.Do(req)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		// Because we don't read the resp.Body, need to manually call Close().
-		_ = resp.Body.Close()
-
-		_, _ = w.Write([]byte("bar"))
-	}
-	http.Handle("/foo", http.HandlerFunc(handler))
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	log.Printf("Listening on port %s", port)
-
-	// Use an ochttp.Handler in order to instrument OpenCensus for incoming
-	// requests.
-	httpHandler := &ochttp.Handler{
-		// Use the Google Cloud propagation format.
-		Propagation: &propagation.HTTPFormat{},
-	}
-	if err := http.ListenAndServe(":"+port, httpHandler); err != nil {
-		log.Fatal(err)
-	}
 }
