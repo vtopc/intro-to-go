@@ -42,7 +42,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte("bar"))
 }
 
-func healthz(w http.ResponseWriter, r *http.Request) {
+func healthz(w http.ResponseWriter, _ *http.Request) {
 	_, _ = w.Write([]byte("OK"))
 }
 
