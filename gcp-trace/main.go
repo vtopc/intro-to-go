@@ -59,15 +59,13 @@ func NewRouter() http.Handler {
 func TraceWrapper(h http.Handler) http.Handler {
 	// Use an ochttp.Handler in order to instrument OpenCensus for incoming
 	// requests.
-	w := &ochttp.Handler{
+	return &ochttp.Handler{
 		// Use the Google Cloud propagation format.
 		Propagation:      &propagation.HTTPFormat{},
 		Handler:          h,
 		IsHealthEndpoint: isHealthEndpoint,
 		FormatSpanName:   formatSpanName,
 	}
-
-	return w
 }
 
 func formatSpanName(r *http.Request) string {
