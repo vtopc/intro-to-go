@@ -3,9 +3,12 @@ package main
 import (
 	"log"
 	"net/http"
+	"strings"
 
 	"go.opencensus.io/trace"
 )
+
+const healthzPath = "/healthz"
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	ctx, span := trace.StartSpan(r.Context(), "handler")
@@ -34,4 +37,16 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	_ = resp.Body.Close()
 
 	_, _ = w.Write([]byte("bar"))
+}
+
+func healthz(w http.ResponseWriter, r *http.Request) {
+	_, _ = w.Write([]byte("OK"))
+}
+
+func isHealthEndpoint(req *http.Request) bool {
+	if strings.HasSuffix(req.URL.String(), healthzPath) {
+		return true
+	}
+
+	return false
 }

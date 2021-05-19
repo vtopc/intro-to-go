@@ -28,15 +28,13 @@ import (
 func main() {
 	registerTrace()
 
-	router := http.NewServeMux()
-	router.Handle("/foo", http.HandlerFunc(handler))
-
 	// Use an ochttp.Handler in order to instrument OpenCensus for incoming
 	// requests.
 	wrappedHandler := &ochttp.Handler{
 		// Use the Google Cloud propagation format.
-		Propagation: &propagation.HTTPFormat{},
-		Handler:     router,
+		Propagation:      &propagation.HTTPFormat{},
+		Handler:          NewRouter(),
+		IsHealthEndpoint: isHealthEndpoint,
 	}
 
 	port := os.Getenv("PORT")
@@ -48,6 +46,14 @@ func main() {
 	if err := http.ListenAndServe(":"+port, wrappedHandler); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func NewRouter() http.Handler {
+	router := http.NewServeMux()
+	router.Handle("/foo", http.HandlerFunc(handler))
+	router.Handle("/healthz", http.HandlerFunc(healthz))
+
+	return router
 }
 
 func registerTrace() {
