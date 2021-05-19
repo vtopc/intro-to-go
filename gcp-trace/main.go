@@ -25,6 +25,8 @@ import (
 	"go.opencensus.io/trace"
 )
 
+const tracePrefix = "test-tracing"
+
 func main() {
 	registerTrace()
 
@@ -35,6 +37,7 @@ func main() {
 		Propagation:      &propagation.HTTPFormat{},
 		Handler:          NewRouter(),
 		IsHealthEndpoint: isHealthEndpoint,
+		FormatSpanName:   formatSpanName,
 	}
 
 	port := os.Getenv("PORT")
@@ -60,8 +63,9 @@ func NewRouter() http.Handler {
 	return router
 }
 
-// TODO: add
-//  FormatSpanName func(r *http.Request) string
+func formatSpanName(r *http.Request) string {
+	return tracePrefix + r.URL.Path
+}
 
 func registerTrace() {
 	// Create and register a OpenCensus Stackdriver Trace exporter.
