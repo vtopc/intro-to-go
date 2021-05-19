@@ -14,6 +14,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	ctx, span := trace.StartSpan(r.Context(), tracePrefix+"/handler")
 	defer span.End()
 
+	// https://opencensus.io/tracing/span/time_events/annotation/
 	span.Annotate([]trace.Attribute{
 		trace.Int64Attribute("custom", 42),
 	}, "Some event")
