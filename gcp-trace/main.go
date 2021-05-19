@@ -41,9 +41,13 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	log.Printf("Listening on port %s", port)
+	addr := ":" + port
 
-	if err := http.ListenAndServe(":"+port, wrappedHandler); err != nil {
+	log.Printf("Listening on %s", addr)
+
+	server := NewServer(addr, wrappedHandler)
+	err := server.ListenAndServe()
+	if err != nil {
 		log.Fatal(err)
 	}
 }
@@ -55,6 +59,9 @@ func NewRouter() http.Handler {
 
 	return router
 }
+
+// TODO: add
+//  FormatSpanName func(r *http.Request) string
 
 func registerTrace() {
 	// Create and register a OpenCensus Stackdriver Trace exporter.

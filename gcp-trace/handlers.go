@@ -43,8 +43,8 @@ func healthz(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte("OK"))
 }
 
-func isHealthEndpoint(req *http.Request) bool {
-	if strings.HasSuffix(req.URL.String(), healthzPath) {
+func isHealthEndpoint(r *http.Request) bool {
+	if strings.HasSuffix(r.URL.String(), healthzPath) {
 		return true
 	}
 
