@@ -30,15 +30,8 @@ const tracePrefix = "test-tracing"
 func main() {
 	registerTrace()
 
-	// Use an ochttp.Handler in order to instrument OpenCensus for incoming
-	// requests.
-	wrappedHandler := &ochttp.Handler{
-		// Use the Google Cloud propagation format.
-		Propagation:      &propagation.HTTPFormat{},
-		Handler:          NewRouter(),
-		IsHealthEndpoint: isHealthEndpoint,
-		FormatSpanName:   formatSpanName,
-	}
+	router := NewRouter()
+	traceRouter := TraceWrapper(router)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -48,7 +41,7 @@ func main() {
 
 	log.Printf("Listening on %s", addr)
 
-	server := NewServer(addr, wrappedHandler)
+	server := NewServer(addr, traceRouter)
 	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
@@ -61,6 +54,20 @@ func NewRouter() http.Handler {
 	router.Handle("/healthz", http.HandlerFunc(healthz))
 
 	return router
+}
+
+func TraceWrapper(h http.Handler) http.Handler {
+	// Use an ochttp.Handler in order to instrument OpenCensus for incoming
+	// requests.
+	w := &ochttp.Handler{
+		// Use the Google Cloud propagation format.
+		Propagation:      &propagation.HTTPFormat{},
+		Handler:          h,
+		IsHealthEndpoint: isHealthEndpoint,
+		FormatSpanName:   formatSpanName,
+	}
+
+	return w
 }
 
 func formatSpanName(r *http.Request) string {
