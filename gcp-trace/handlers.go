@@ -11,7 +11,7 @@ import (
 const healthzPath = "/healthz"
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	ctx, span := trace.StartSpan(r.Context(), "handler")
+	ctx, span := trace.StartSpan(r.Context(), "test-tracing/handler")
 	defer span.End()
 	w.Header().Set("X-Trace-Id", span.SpanContext().TraceID.String())
 
