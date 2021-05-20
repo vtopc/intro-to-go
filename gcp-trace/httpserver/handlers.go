@@ -2,6 +2,7 @@ package httpserver
 
 import (
 	"net/http"
+	"strconv"
 
 	"gcp-trace/db"
 	"gcp-trace/ltrace"
@@ -23,7 +24,8 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		ctx, span = trace.StartSpan(r.Context(), ltrace.Prefix+"/handler")
 		defer span.End()
 
-		w.Header().Set("X-Trace-Id", span.SpanContext().TraceID.String())
+		w.Header().Set("X-B3-TraceId", span.SpanContext().TraceID.String())
+		w.Header().Set("X-B3-Sampled", strconv.Itoa(btoi(span.SpanContext().IsSampled())))
 
 		span.AddAttributes(trace.Int64Attribute("custom", 42))
 	}
@@ -53,4 +55,12 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// _ = resp.Body.Close()
 
 	_, _ = w.Write([]byte("bar"))
+}
+
+func btoi(b bool) int {
+	if b {
+		return 1
+	}
+
+	return 0
 }
