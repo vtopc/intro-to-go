@@ -10,6 +10,9 @@ import (
 const healthzPath = "/healthz"
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	// get current span:
+	//  span := trace.FromContext(r.Context())
+	// or create new span:
 	ctx, span := trace.StartSpan(r.Context(), tracePrefix+"/handler")
 	defer span.End()
 
