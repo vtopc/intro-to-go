@@ -1,4 +1,4 @@
-package vtrace
+package ltrace
 
 import (
 	"log"

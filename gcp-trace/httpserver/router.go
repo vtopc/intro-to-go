@@ -6,8 +6,8 @@ import (
 	"gcp-trace/httpserver/healthz"
 )
 
-func NewRouter(trace bool) http.Handler {
-	handler := Handler{Trace: trace}
+func NewRouter(traceable bool) http.Handler {
+	handler := Handler{Traceable: traceable}
 
 	router := http.NewServeMux()
 	router.Handle("/foo", handler)

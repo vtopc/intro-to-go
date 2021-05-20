@@ -3,29 +3,32 @@ package httpserver
 import (
 	"net/http"
 
-	"gcp-trace/vtrace"
+	"gcp-trace/db"
+	"gcp-trace/ltrace"
 
 	"go.opencensus.io/trace"
 )
 
 type Handler struct {
-	Trace bool
+	Traceable bool
 }
 
 func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if h.Trace {
+	ctx := r.Context() // default context
+	if h.Traceable {
 		// get current span:
 		//  span := trace.FromContext(r.Context())
 		// or create new span:
-		ctx, span := trace.StartSpan(r.Context(), vtrace.Prefix+"/handler")
+		var span *trace.Span
+		ctx, span = trace.StartSpan(r.Context(), ltrace.Prefix+"/handler")
 		defer span.End()
 
 		w.Header().Set("X-Trace-Id", span.SpanContext().TraceID.String())
 
 		span.AddAttributes(trace.Int64Attribute("custom", 42))
-
-		_ = ctx
 	}
+
+	db.Query(ctx, h.Traceable)
 
 	// uncomment for client propagation:
 	// // The trace ID from the incoming request will be

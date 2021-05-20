@@ -19,14 +19,14 @@ import (
 	"os"
 
 	"gcp-trace/httpserver"
-	"gcp-trace/vtrace"
+	"gcp-trace/ltrace"
 )
 
 func main() {
-	vtrace.RegisterTrace()
+	ltrace.RegisterTrace()
 
 	router := httpserver.NewRouter(true)
-	traceRouter := vtrace.HTTPHandlerWrapper(router)
+	traceRouter := ltrace.HTTPHandlerWrapper(router)
 
 	port := os.Getenv("PORT")
 	if port == "" {
