@@ -16,22 +16,17 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 
-	"contrib.go.opencensus.io/exporter/stackdriver"
-	"contrib.go.opencensus.io/exporter/stackdriver/propagation"
-	"go.opencensus.io/plugin/ochttp"
-	"go.opencensus.io/trace"
+	"gcp-trace/httpserver"
+	"gcp-trace/vtrace"
 )
 
-const tracePrefix = "test-tracing"
-
 func main() {
-	registerTrace()
+	vtrace.RegisterTrace()
 
-	router := NewRouter()
-	traceRouter := TraceWrapper(router)
+	router := httpserver.NewRouter()
+	traceRouter := vtrace.HTTPHandlerWrapper(router)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -41,54 +36,9 @@ func main() {
 
 	log.Printf("Listening on %s", addr)
 
-	server := NewServer(addr, traceRouter)
+	server := httpserver.NewServer(addr, traceRouter)
 	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func NewRouter() http.Handler {
-	router := http.NewServeMux()
-	router.Handle("/foo", http.HandlerFunc(handler))
-	router.Handle("/healthz", http.HandlerFunc(healthz))
-
-	return router
-}
-
-func TraceWrapper(h http.Handler) http.Handler {
-	// Use an ochttp.Handler in order to instrument OpenCensus for incoming
-	// requests.
-	return &ochttp.Handler{
-		// Use the Google Cloud propagation format.
-		Propagation:      &propagation.HTTPFormat{},
-		Handler:          h,
-		IsHealthEndpoint: isHealthEndpoint,
-		FormatSpanName:   formatSpanName,
-	}
-}
-
-func formatSpanName(r *http.Request) string {
-	return tracePrefix + r.URL.Path
-}
-
-func registerTrace() {
-	// Create and register a OpenCensus Stackdriver Trace exporter.
-	exporter, err := stackdriver.NewExporter(stackdriver.Options{
-		ProjectID: os.Getenv("GOOGLE_CLOUD_PROJECT"),
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-	trace.RegisterExporter(exporter)
-
-	// By default, traces will be sampled relatively rarely. To change the
-	// sampling frequency for your entire program, call ApplyConfig. Use a
-	// ProbabilitySampler to sample a subset of traces, or use AlwaysSample to
-	// collect a trace on every run.
-	//
-	// Be careful about using trace.AlwaysSample in a production application
-	// with significant traffic: a new trace will be started and exported for
-	// every request.
-	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
 }

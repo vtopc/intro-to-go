@@ -1,6 +1,6 @@
 .PHONY: run
 run:
-	go run ./*.go
+	go run main.go
 
 .PHONY: bench
 bench:

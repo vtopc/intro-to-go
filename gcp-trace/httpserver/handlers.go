@@ -1,19 +1,18 @@
-package main
+package httpserver
 
 import (
 	"net/http"
-	"strings"
+
+	"gcp-trace/vtrace"
 
 	"go.opencensus.io/trace"
 )
 
-const healthzPath = "/healthz"
-
-func handler(w http.ResponseWriter, r *http.Request) {
+func Handler(w http.ResponseWriter, r *http.Request) {
 	// get current span:
 	//  span := trace.FromContext(r.Context())
 	// or create new span:
-	ctx, span := trace.StartSpan(r.Context(), tracePrefix+"/handler")
+	ctx, span := trace.StartSpan(r.Context(), vtrace.Prefix+"/handler")
 	defer span.End()
 
 	w.Header().Set("X-Trace-Id", span.SpanContext().TraceID.String())
@@ -44,16 +43,4 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// _ = resp.Body.Close()
 
 	_, _ = w.Write([]byte("bar"))
-}
-
-func healthz(w http.ResponseWriter, _ *http.Request) {
-	_, _ = w.Write([]byte("OK"))
-}
-
-func isHealthEndpoint(r *http.Request) bool {
-	if strings.HasSuffix(r.URL.String(), healthzPath) {
-		return true
-	}
-
-	return false
 }
