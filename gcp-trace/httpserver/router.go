@@ -6,9 +6,11 @@ import (
 	"gcp-trace/httpserver/healthz"
 )
 
-func NewRouter() http.Handler {
+func NewRouter(trace bool) http.Handler {
+	handler := Handler{Trace: trace}
+
 	router := http.NewServeMux()
-	router.Handle("/foo", http.HandlerFunc(Handler))
+	router.Handle("/foo", handler)
 	router.Handle("/healthz", http.HandlerFunc(healthz.HealthCheck))
 
 	return router

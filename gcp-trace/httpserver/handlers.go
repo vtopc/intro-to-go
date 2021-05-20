@@ -8,19 +8,26 @@ import (
 	"go.opencensus.io/trace"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
-	// get current span:
-	//  span := trace.FromContext(r.Context())
-	// or create new span:
-	ctx, span := trace.StartSpan(r.Context(), vtrace.Prefix+"/handler")
-	defer span.End()
+type Handler struct {
+	Trace bool
+}
 
-	w.Header().Set("X-Trace-Id", span.SpanContext().TraceID.String())
+func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if h.Trace {
+		// get current span:
+		//  span := trace.FromContext(r.Context())
+		// or create new span:
+		ctx, span := trace.StartSpan(r.Context(), vtrace.Prefix+"/handler")
+		defer span.End()
 
-	span.AddAttributes(trace.Int64Attribute("custom", 42))
+		w.Header().Set("X-Trace-Id", span.SpanContext().TraceID.String())
 
-	_ = ctx
-	// TODO: uncomment for client propagation:
+		span.AddAttributes(trace.Int64Attribute("custom", 42))
+
+		_ = ctx
+	}
+
+	// uncomment for client propagation:
 	// // The trace ID from the incoming request will be
 	// // propagated to the outgoing request.
 	// req, err := http.NewRequestWithContext(

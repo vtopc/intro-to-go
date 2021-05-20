@@ -25,7 +25,7 @@ import (
 func main() {
 	vtrace.RegisterTrace()
 
-	router := httpserver.NewRouter()
+	router := httpserver.NewRouter(true)
 	traceRouter := vtrace.HTTPHandlerWrapper(router)
 
 	port := os.Getenv("PORT")
