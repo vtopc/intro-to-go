@@ -37,7 +37,7 @@ func RegisterTrace() {
 	// Be careful about using trace.AlwaysSample in a production application
 	// with significant traffic: a new trace will be started and exported for
 	// every request.
-	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
+	trace.ApplyConfig(trace.Config{DefaultSampler: trace.ProbabilitySampler(1)})
 }
 
 func HTTPHandlerWrapper(h http.Handler) http.Handler {
