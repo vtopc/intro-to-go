@@ -4,4 +4,4 @@ run:
 
 .PHONY: bench
 bench:
-	go test -bench=. -cpu=2,4,8 -benchmem
+	go test -bench=. -cpu=4 -benchmem -benchtime=100x
