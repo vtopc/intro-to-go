@@ -8,8 +8,20 @@ func captured() (i int) {
 	i = 1
 
 	defer func(j int) {
-		fmt.Println("captured deferred:", j)
+		fmt.Println("captured defer:", j)
 	}(i)
+
+	i++
+
+	return
+}
+
+func pointer() (i int) {
+	i = 1
+
+	defer func(j *int) {
+		fmt.Println("pointer defer:", *j)
+	}(&i)
 
 	i++
 
@@ -20,7 +32,7 @@ func latest() (i int) {
 	i = 1
 
 	defer func() {
-		fmt.Println("latest deferred:", i)
+		fmt.Println("latest defer:", i)
 	}()
 
 	i++
@@ -30,5 +42,6 @@ func latest() (i int) {
 
 func main() {
 	fmt.Println("captured:", captured())
+	fmt.Println("pointer:", pointer())
 	fmt.Println("latest:", latest())
 }
