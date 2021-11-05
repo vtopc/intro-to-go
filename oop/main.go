@@ -13,6 +13,7 @@ https://code.tutsplus.com/tutorials/lets-go-object-oriented-programming-in-golan
 import "fmt"
 
 type Animal struct {
+	Name  string `json:"name"`
 	lives int
 }
 
@@ -69,7 +70,7 @@ func (*Cat) Meow() string {
 	return "meow"
 }
 
-// overriding:
+// Die overriding:
 func (c *Cat) Die() string {
 	c.lives--
 
