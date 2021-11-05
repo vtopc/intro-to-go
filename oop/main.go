@@ -17,6 +17,8 @@ type Animal struct {
 	lives int
 }
 
+// TODO: add (*Animal).UnmarshalJSON(data []byte) error
+
 func NewAnimal() *Animal {
 	return &Animal{
 		lives: 1,
