@@ -19,6 +19,9 @@ type Animal struct {
 
 // TODO: add (*Animal).UnmarshalJSON(data []byte) error
 
+// NewAnimal is a constructor for Animal.
+// We are not using struct literal here, since zero values doesn't fit, see next for details:
+// https://pauldigian.hashnode.dev/advanced-go-choosing-between-a-constructor-and-declaring-the-type
 func NewAnimal() *Animal {
 	return &Animal{
 		lives: 1,
