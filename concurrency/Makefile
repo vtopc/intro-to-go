@@ -18,3 +18,7 @@ test:
 .PHONY: lint
 lint:
 	golangci-lint run ./...
+
+BENCHSTAT = $(GOPATH)/bin/benchstat
+$(BENCHSTAT):
+	go install golang.org/x/perf/cmd/benchstat@latest
