@@ -14,7 +14,7 @@ import "fmt"
 
 type Animal struct {
 	Name  string `json:"name"`
-	lives int
+	lives int    // non-exportable (private) field
 }
 
 // TODO: add (*Animal).UnmarshalJSON(data []byte) error
