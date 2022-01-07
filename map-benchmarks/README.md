@@ -13,6 +13,8 @@ BenchmarkIntMapAlloc       	   3820152	       303.2 ns/op	         420 B/op	    
 BenchmarkIntMapAlloc-4     	   3842608	       306.1 ns/op	         420 B/op	       1 allocs/op
 BenchmarkStructAlloc       	1000000000	         0.2535 ns/op	       0 B/op	       0 allocs/op
 BenchmarkStructAlloc-4     	1000000000	         0.2535 ns/op	       0 B/op	       0 allocs/op
+BenchmarkIfaceMapSearch      161499007	         8.831 ns/op	       0 B/op	       0 allocs/op
+BenchmarkIfaceMapSearch-4    143506177	         8.853 ns/op	       0 B/op	       0 allocs/op
 BenchmarkIntMapSearch      	 126815578	         8.457 ns/op	       0 B/op	       0 allocs/op
 BenchmarkIntMapSearch-4    	 134849901	         8.874 ns/op	       0 B/op	       0 allocs/op
 BenchmarkSwitchSearch      	 208705524	         5.706 ns/op	       0 B/op	       0 allocs/op

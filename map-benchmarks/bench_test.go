@@ -22,6 +22,14 @@ func BenchmarkStructAlloc(b *testing.B) {
 	}
 }
 
+func BenchmarkIfaceMapSearch(b *testing.B) {
+	m := newIfaceMap()
+
+	for n := 0; n < b.N; n++ {
+		_ = m["E"]
+	}
+}
+
 func BenchmarkIntMapSearch(b *testing.B) {
 	m := newIntMap()
 
