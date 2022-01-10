@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"testing"
 )
 
@@ -49,5 +50,21 @@ func BenchmarkStructSearch(b *testing.B) {
 
 	for n := 0; n < b.N; n++ {
 		_ = s.E
+	}
+}
+
+func BenchmarkIntMapMarshal(b *testing.B) {
+	v := newIntMap()
+
+	for n := 0; n < b.N; n++ {
+		_, _ = json.Marshal(v)
+	}
+}
+
+func BenchmarkStructMarshal(b *testing.B) {
+	v := newStruct()
+
+	for n := 0; n < b.N; n++ {
+		_, _ = json.Marshal(v)
 	}
 }
