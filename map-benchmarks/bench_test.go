@@ -1,9 +1,13 @@
 package main
 
 import (
+	_ "embed"
 	"encoding/json"
 	"testing"
 )
+
+//go:embed testdata/json.json
+var jb []byte
 
 func BenchmarkIfaceMapAlloc(b *testing.B) {
 	for n := 0; n < b.N; n++ {
@@ -53,6 +57,14 @@ func BenchmarkStructSearch(b *testing.B) {
 	}
 }
 
+func BenchmarkIfaceMapMarshal(b *testing.B) {
+	v := newIfaceMap()
+
+	for n := 0; n < b.N; n++ {
+		_, _ = json.Marshal(v)
+	}
+}
+
 func BenchmarkIntMapMarshal(b *testing.B) {
 	v := newIntMap()
 
@@ -66,5 +78,35 @@ func BenchmarkStructMarshal(b *testing.B) {
 
 	for n := 0; n < b.N; n++ {
 		_, _ = json.Marshal(v)
+	}
+}
+
+func BenchmarkIntMapUnmarshal(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		var v map[string]int
+		err := json.Unmarshal(jb, &v)
+		if err != nil {
+			panic(err)
+		}
+	}
+}
+
+func BenchmarkIfaceMapUnmarshal(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		var v map[string]interface{}
+		err := json.Unmarshal(jb, &v)
+		if err != nil {
+			panic(err)
+		}
+	}
+}
+
+func BenchmarkSliceUnmarshal(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		var v S
+		err := json.Unmarshal(jb, &v)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
