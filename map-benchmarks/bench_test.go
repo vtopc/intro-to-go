@@ -12,30 +12,39 @@ const (
 	worstKey = "K"
 )
 
+var (
+	iface    interface{}
+	i        int
+	ifaceMap map[string]interface{}
+	intMap   map[string]int
+	st       S
+	sl       Elems
+)
+
 //go:embed testdata/json.json
 var jb []byte
 
 func BenchmarkIfaceMapAlloc(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		_ = newIfaceMap()
+		ifaceMap = newIfaceMap()
 	}
 }
 
 func BenchmarkIntMapAlloc(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		_ = newIntMap()
+		intMap = newIntMap()
 	}
 }
 
 func BenchmarkSliceAlloc(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		_ = newSlice()
+		sl = newSlice()
 	}
 }
 
 func BenchmarkStructAlloc(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		_ = newStruct()
+		st = newStruct()
 	}
 }
 
@@ -68,38 +77,32 @@ func BenchmarkIfaceMapAvgSearch10Elems(b *testing.B) {
 
 	for n := 0; n < b.N; n++ {
 		v := m[avgKey]
-		_, ok := v.(int)
+		var ok bool
+		iface, ok = v.(int)
 		if !ok {
 			panic(fmt.Sprintf("failed to assert %v(%T) into int", v, v))
 		}
 	}
+
 }
 
 func BenchmarkIntMapAvgSearch10Elems(b *testing.B) {
 	m := newIntMap()
 
 	for n := 0; n < b.N; n++ {
-		_ = m[avgKey]
+		i = m[avgKey]
 	}
 }
 
 func BenchmarkIntSwitchAvgSearch10Elems(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		_ = switchSearch(avgKey)
+		i = switchSearch(avgKey)
 	}
 }
 
 func BenchmarkIntSwitchWorstSearch10Elems(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		_ = switchSearch("K")
-	}
-}
-
-func BenchmarkStructSearch10Elems(b *testing.B) {
-	s := newStruct()
-
-	for n := 0; n < b.N; n++ {
-		_ = s.E
+		i = switchSearch(worstKey)
 	}
 }
 
@@ -109,7 +112,7 @@ func BenchmarkSliceAvgSearch10Elems(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		for _, e := range s {
 			if e.K == avgKey {
-				_ = e.V
+				i = e.V
 				break
 			}
 		}
@@ -121,11 +124,19 @@ func BenchmarkSliceWorstSearch10Elems(b *testing.B) {
 
 	for n := 0; n < b.N; n++ {
 		for _, e := range s {
-			if e.K == "K" {
-				_ = e.V
+			if e.K == worstKey {
+				i = e.V
 				break
 			}
 		}
+	}
+}
+
+func BenchmarkStructSearch10Elems(b *testing.B) {
+	s := newStruct()
+
+	for n := 0; n < b.N; n++ {
+		i = s.E
 	}
 }
 
@@ -133,7 +144,10 @@ func BenchmarkIfaceMapMarshal(b *testing.B) {
 	v := newIfaceMap()
 
 	for n := 0; n < b.N; n++ {
-		_, _ = json.Marshal(v)
+		_, err := json.Marshal(v)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
@@ -141,7 +155,10 @@ func BenchmarkIntMapMarshal(b *testing.B) {
 	v := newIntMap()
 
 	for n := 0; n < b.N; n++ {
-		_, _ = json.Marshal(v)
+		_, err := json.Marshal(v)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
@@ -149,7 +166,10 @@ func BenchmarkStructMarshal(b *testing.B) {
 	v := newStruct()
 
 	for n := 0; n < b.N; n++ {
-		_, _ = json.Marshal(v)
+		_, err := json.Marshal(v)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
