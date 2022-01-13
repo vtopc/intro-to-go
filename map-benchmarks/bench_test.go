@@ -72,7 +72,7 @@ func BenchmarkIntMapSearch(b *testing.B) {
 	}
 }
 
-func BenchmarkSwitchSearch(b *testing.B) {
+func BenchmarkIntSwitchSearch(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		_ = switchSearch("E")
 	}

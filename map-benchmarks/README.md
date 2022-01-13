@@ -15,7 +15,7 @@ BenchmarkIntMapWrite-4         	 122433998	         9.639 ns/op	       0 B/op	  
 BenchmarkStructWrite-4         	1000000000	         0.2497 ns/op	       0 B/op	       0 allocs/op
 BenchmarkIfaceMapSearch-4      	 136487755	         9.535 ns/op	       0 B/op	       0 allocs/op
 BenchmarkIntMapSearch-4        	 147279693	         8.808 ns/op	       0 B/op	       0 allocs/op
-BenchmarkSwitchSearch-4        	 207983079	         5.594 ns/op	       0 B/op	       0 allocs/op
+BenchmarkIntSwitchSearch-4     	 207983079	         5.594 ns/op	       0 B/op	       0 allocs/op
 BenchmarkStructSearch-4        	1000000000	         0.2494 ns/op	       0 B/op	       0 allocs/op
 BenchmarkIfaceMapMarshal-4     	    443677	      2603 ns/op	        1288 B/op	      27 allocs/op
 BenchmarkIntMapMarshal-4       	    506270	      2164 ns/op	        1208 B/op	      27 allocs/op
