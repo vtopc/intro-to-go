@@ -1,6 +1,6 @@
 .PHONY: bench
 bench:
-	go test -bench=. -cpu=1,4 -benchmem
+	go test -bench=. -cpu=4 -benchmem
 
 BENCHSTAT = $(GOPATH)/bin/benchstat
 $(BENCHSTAT):
