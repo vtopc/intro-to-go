@@ -9,6 +9,7 @@ pkg: map-benchmarks
 cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
 BenchmarkIfaceMapAlloc-4                 	   2560513	       466.5 ns/op	         582 B/op	       1 allocs/op
 BenchmarkIntMapAlloc-4                   	   3874237	       302.0 ns/op	         420 B/op	       1 allocs/op
+BenchmarkSliceAlloc-4                    	1000000000	         0.2517 ns/op	       0 B/op	       0 allocs/op
 BenchmarkStructAlloc-4                   	1000000000	         0.2551 ns/op	       0 B/op	       0 allocs/op
 BenchmarkIfaceMapWrite-4                 	 100000000	        10.23 ns/op	           0 B/op	       0 allocs/op
 BenchmarkIntMapWrite-4                   	 123532088	         9.790 ns/op	       0 B/op	       0 allocs/op

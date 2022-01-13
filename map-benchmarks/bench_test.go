@@ -27,6 +27,12 @@ func BenchmarkIntMapAlloc(b *testing.B) {
 	}
 }
 
+func BenchmarkSliceAlloc(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		_ = newSlice()
+	}
+}
+
 func BenchmarkStructAlloc(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		_ = newStruct()
