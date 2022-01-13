@@ -31,7 +31,7 @@ func BenchmarkIfaceMapSearch(b *testing.B) {
 	m := newIfaceMap()
 
 	for n := 0; n < b.N; n++ {
-		_ = m["E"]
+		_ = m["E"].(int)
 	}
 }
 
