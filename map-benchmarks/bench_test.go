@@ -134,3 +134,19 @@ func BenchmarkSliceUnmarshal(b *testing.B) {
 		}
 	}
 }
+
+func BenchmarkIfaceSetWrite(b *testing.B) {
+	m := make(map[interface{}]struct{})
+
+	for n := 0; n < b.N; n++ {
+		m["E"] = struct{}{}
+	}
+}
+
+func BenchmarkStringSetWrite(b *testing.B) {
+	m := make(map[string]struct{})
+
+	for n := 0; n < b.N; n++ {
+		m["E"] = struct{}{}
+	}
+}
