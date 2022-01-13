@@ -7,6 +7,11 @@ import (
 	"testing"
 )
 
+const (
+	avgKey   = "E"
+	worstKey = "K"
+)
+
 //go:embed testdata/json.json
 var jb []byte
 
@@ -32,7 +37,7 @@ func BenchmarkIfaceMapWrite(b *testing.B) {
 	m := make(map[string]interface{})
 
 	for n := 0; n < b.N; n++ {
-		m["E"] = 5
+		m[avgKey] = 5
 	}
 }
 
@@ -40,7 +45,7 @@ func BenchmarkIntMapWrite(b *testing.B) {
 	m := make(map[string]int)
 
 	for n := 0; n < b.N; n++ {
-		m["E"] = 5
+		m[avgKey] = 5
 	}
 }
 
@@ -52,11 +57,11 @@ func BenchmarkStructWrite(b *testing.B) {
 	}
 }
 
-func BenchmarkIfaceMapSearch(b *testing.B) {
+func BenchmarkIfaceMapAvgSearch10Elems(b *testing.B) {
 	m := newIfaceMap()
 
 	for n := 0; n < b.N; n++ {
-		v := m["E"]
+		v := m[avgKey]
 		_, ok := v.(int)
 		if !ok {
 			panic(fmt.Sprintf("failed to assert %v(%T) into int", v, v))
@@ -64,25 +69,57 @@ func BenchmarkIfaceMapSearch(b *testing.B) {
 	}
 }
 
-func BenchmarkIntMapSearch(b *testing.B) {
+func BenchmarkIntMapAvgSearch10Elems(b *testing.B) {
 	m := newIntMap()
 
 	for n := 0; n < b.N; n++ {
-		_ = m["E"]
+		_ = m[avgKey]
 	}
 }
 
-func BenchmarkIntSwitchSearch(b *testing.B) {
+func BenchmarkIntSwitchAvgSearch10Elems(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		_ = switchSearch("E")
+		_ = switchSearch(avgKey)
 	}
 }
 
-func BenchmarkStructSearch(b *testing.B) {
+func BenchmarkIntSwitchWorstSearch10Elems(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		_ = switchSearch("K")
+	}
+}
+
+func BenchmarkStructSearch10Elems(b *testing.B) {
 	s := newStruct()
 
 	for n := 0; n < b.N; n++ {
 		_ = s.E
+	}
+}
+
+func BenchmarkSliceAvgSearch10Elems(b *testing.B) {
+	s := newSlice()
+
+	for n := 0; n < b.N; n++ {
+		for _, e := range s {
+			if e.K == avgKey {
+				_ = e.V
+				break
+			}
+		}
+	}
+}
+
+func BenchmarkSliceWorstSearch10Elems(b *testing.B) {
+	s := newSlice()
+
+	for n := 0; n < b.N; n++ {
+		for _, e := range s {
+			if e.K == "K" {
+				_ = e.V
+				break
+			}
+		}
 	}
 }
 
@@ -130,7 +167,7 @@ func BenchmarkIfaceMapUnmarshal(b *testing.B) {
 	}
 }
 
-func BenchmarkSliceUnmarshal(b *testing.B) {
+func BenchmarkStructUnmarshal(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		var v S
 		err := json.Unmarshal(jb, &v)
