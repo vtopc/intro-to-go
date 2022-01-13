@@ -27,11 +27,35 @@ func BenchmarkStructAlloc(b *testing.B) {
 	}
 }
 
+func BenchmarkIfaceMapWrite(b *testing.B) {
+	m := make(map[string]interface{})
+
+	for n := 0; n < b.N; n++ {
+		m["E"] = 5
+	}
+}
+
+func BenchmarkIntMapWrite(b *testing.B) {
+	m := make(map[string]int)
+
+	for n := 0; n < b.N; n++ {
+		m["E"] = 5
+	}
+}
+
+func BenchmarkStructWrite(b *testing.B) {
+	var s S
+
+	for n := 0; n < b.N; n++ {
+		s.E = 5
+	}
+}
+
 func BenchmarkIfaceMapSearch(b *testing.B) {
 	m := newIfaceMap()
 
 	for n := 0; n < b.N; n++ {
-		_ = m["E"].(int)
+		_, _ = m["E"].(int)
 	}
 }
 
