@@ -3,6 +3,7 @@ package main
 import (
 	_ "embed"
 	"encoding/json"
+	"fmt"
 	"testing"
 )
 
@@ -55,7 +56,11 @@ func BenchmarkIfaceMapSearch(b *testing.B) {
 	m := newIfaceMap()
 
 	for n := 0; n < b.N; n++ {
-		_, _ = m["E"].(int)
+		v := m["E"]
+		_, ok := v.(int)
+		if !ok {
+			panic(fmt.Sprintf("failed to assert %v(%T) into int", v, v))
+		}
 	}
 }
 
