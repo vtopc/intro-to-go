@@ -7,8 +7,6 @@ import (
 
 const count = 100
 
-var s []S
-
 func BenchmarkIndexSlice(b *testing.B) {
 	var s []S
 
