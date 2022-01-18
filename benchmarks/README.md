@@ -9,6 +9,8 @@ goos: darwin
 goarch: amd64
 pkg: benchmarks
 cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
-BenchmarkIndexSlice-4    	  887233	      1345 ns/op	    8192 B/op	       1 allocs/op
-BenchmarkAppendSlice-4   	  629828	      1591 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkSliceIndex-4            	    826884	      1291 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkSliceAppend-4           	    771477	      1455 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkAllocStructLiteral-4    	1000000000	         0.2511 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAllocStructByFields-4   	1000000000	         0.2489 ns/op	       0 B/op	       0 allocs/op
 ```
