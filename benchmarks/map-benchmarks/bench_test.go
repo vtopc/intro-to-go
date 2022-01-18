@@ -173,6 +173,16 @@ func BenchmarkMarshalStruct(b *testing.B) {
 	}
 }
 
+func BenchmarkUnmarshalMapIntPrealloc(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		m := make(map[string]int, 10)
+		err := json.Unmarshal(jb, &m)
+		if err != nil {
+			panic(err)
+		}
+	}
+}
+
 func BenchmarkUnmarshalMapInt(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		var v map[string]int
