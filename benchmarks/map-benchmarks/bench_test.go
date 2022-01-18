@@ -24,31 +24,31 @@ var (
 //go:embed testdata/json.json
 var jb []byte
 
-func BenchmarkIfaceMapAlloc(b *testing.B) {
+func BenchmarkAllocMapIface(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		ifaceMap = newIfaceMap()
 	}
 }
 
-func BenchmarkIntMapAlloc(b *testing.B) {
+func BenchmarkAllocMapInt(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		intMap = newIntMap()
 	}
 }
 
-func BenchmarkSliceAlloc(b *testing.B) {
+func BenchmarkAllocSlice(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		sl = newSlice()
 	}
 }
 
-func BenchmarkStructAlloc(b *testing.B) {
+func BenchmarkAllocStruct(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		st = newStruct()
 	}
 }
 
-func BenchmarkIfaceMapWrite(b *testing.B) {
+func BenchmarkWriteMapIface(b *testing.B) {
 	m := make(map[string]interface{})
 
 	for n := 0; n < b.N; n++ {
@@ -56,7 +56,7 @@ func BenchmarkIfaceMapWrite(b *testing.B) {
 	}
 }
 
-func BenchmarkIntMapWrite(b *testing.B) {
+func BenchmarkWriteMapInt(b *testing.B) {
 	m := make(map[string]int)
 
 	for n := 0; n < b.N; n++ {
@@ -64,7 +64,7 @@ func BenchmarkIntMapWrite(b *testing.B) {
 	}
 }
 
-func BenchmarkStructWrite(b *testing.B) {
+func BenchmarkWriteStruct(b *testing.B) {
 	var s S
 
 	for n := 0; n < b.N; n++ {
@@ -72,7 +72,7 @@ func BenchmarkStructWrite(b *testing.B) {
 	}
 }
 
-func BenchmarkIfaceMapAvgSearch10Elems(b *testing.B) {
+func BenchmarkSearch10ElemsMapIfaceAvg(b *testing.B) {
 	m := newIfaceMap()
 
 	for n := 0; n < b.N; n++ {
@@ -86,7 +86,7 @@ func BenchmarkIfaceMapAvgSearch10Elems(b *testing.B) {
 
 }
 
-func BenchmarkIntMapAvgSearch10Elems(b *testing.B) {
+func BenchmarkSearch10ElemsMapIntAvg(b *testing.B) {
 	m := newIntMap()
 
 	for n := 0; n < b.N; n++ {
@@ -94,19 +94,19 @@ func BenchmarkIntMapAvgSearch10Elems(b *testing.B) {
 	}
 }
 
-func BenchmarkIntSwitchAvgSearch10Elems(b *testing.B) {
+func BenchmarkSearch10ElemsSwitchIntAvg(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		i = switchSearch(avgKey)
 	}
 }
 
-func BenchmarkIntSwitchWorstSearch10Elems(b *testing.B) {
+func BenchmarkSearch10ElemsSwitchIntWorst(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		i = switchSearch(worstKey)
 	}
 }
 
-func BenchmarkSliceAvgSearch10Elems(b *testing.B) {
+func BenchmarkSearch10ElemsSliceAvg(b *testing.B) {
 	s := newSlice()
 
 	for n := 0; n < b.N; n++ {
@@ -119,7 +119,7 @@ func BenchmarkSliceAvgSearch10Elems(b *testing.B) {
 	}
 }
 
-func BenchmarkSliceWorstSearch10Elems(b *testing.B) {
+func BenchmarkSearch10ElemsSliceWorst(b *testing.B) {
 	s := newSlice()
 
 	for n := 0; n < b.N; n++ {
@@ -132,7 +132,7 @@ func BenchmarkSliceWorstSearch10Elems(b *testing.B) {
 	}
 }
 
-func BenchmarkStructSearch10Elems(b *testing.B) {
+func BenchmarkSearch10ElemsStruct(b *testing.B) {
 	s := newStruct()
 
 	for n := 0; n < b.N; n++ {
@@ -140,7 +140,7 @@ func BenchmarkStructSearch10Elems(b *testing.B) {
 	}
 }
 
-func BenchmarkIfaceMapMarshal(b *testing.B) {
+func BenchmarkMarshalMapIface(b *testing.B) {
 	v := newIfaceMap()
 
 	for n := 0; n < b.N; n++ {
@@ -151,7 +151,7 @@ func BenchmarkIfaceMapMarshal(b *testing.B) {
 	}
 }
 
-func BenchmarkIntMapMarshal(b *testing.B) {
+func BenchmarkMarshalMapInt(b *testing.B) {
 	v := newIntMap()
 
 	for n := 0; n < b.N; n++ {
@@ -162,7 +162,7 @@ func BenchmarkIntMapMarshal(b *testing.B) {
 	}
 }
 
-func BenchmarkStructMarshal(b *testing.B) {
+func BenchmarkMarshalStruct(b *testing.B) {
 	v := newStruct()
 
 	for n := 0; n < b.N; n++ {
@@ -173,7 +173,7 @@ func BenchmarkStructMarshal(b *testing.B) {
 	}
 }
 
-func BenchmarkIntMapUnmarshal(b *testing.B) {
+func BenchmarkUnmarshalMapInt(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		var v map[string]int
 		err := json.Unmarshal(jb, &v)
@@ -183,7 +183,7 @@ func BenchmarkIntMapUnmarshal(b *testing.B) {
 	}
 }
 
-func BenchmarkIfaceMapUnmarshal(b *testing.B) {
+func BenchmarkUnmarshalMapIface(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		var v map[string]interface{}
 		err := json.Unmarshal(jb, &v)
@@ -193,7 +193,7 @@ func BenchmarkIfaceMapUnmarshal(b *testing.B) {
 	}
 }
 
-func BenchmarkStructUnmarshal(b *testing.B) {
+func BenchmarkUnmarshalStruct(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		var v S
 		err := json.Unmarshal(jb, &v)
@@ -203,7 +203,7 @@ func BenchmarkStructUnmarshal(b *testing.B) {
 	}
 }
 
-func BenchmarkIfaceSetWrite(b *testing.B) {
+func BenchmarkSetWriteIface(b *testing.B) {
 	m := make(map[interface{}]struct{})
 
 	for n := 0; n < b.N; n++ {
@@ -211,7 +211,7 @@ func BenchmarkIfaceSetWrite(b *testing.B) {
 	}
 }
 
-func BenchmarkStringSetWrite(b *testing.B) {
+func BenchmarkSetWriteString(b *testing.B) {
 	m := make(map[string]struct{})
 
 	for n := 0; n < b.N; n++ {
