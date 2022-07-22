@@ -13,13 +13,15 @@ const (
 )
 
 var (
-	iface    interface{}
-	i        int
-	ifaceMap map[string]interface{}
-	intMap   map[string]int
-	st       S
-	sl       Elems
-	ptrSl    PtrElems
+	iface     interface{}
+	i         int
+	ifaceMap  map[string]interface{}
+	intMap    map[string]int
+	st        S
+	sl        Elems
+	ptrSl     PtrElems
+	hugeSl    HugeElems
+	hugePtrSl HugePtrElems
 )
 
 //go:embed testdata/json.json
@@ -46,6 +48,18 @@ func BenchmarkAllocSlice(b *testing.B) {
 func BenchmarkAllocPtrSlice(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		ptrSl = newPtrSlice()
+	}
+}
+
+func BenchmarkAllocHugeSlice(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		hugeSl = newHugeSlice()
+	}
+}
+
+func BenchmarkAllocHugePtrSlice(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		hugePtrSl = newHugePtrSlice()
 	}
 }
 

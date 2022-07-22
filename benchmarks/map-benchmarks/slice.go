@@ -9,6 +9,12 @@ type Elem struct {
 	V int
 }
 
+type HugeElem [1024]byte
+
+type HugeElems []HugeElem
+
+type HugePtrElems []*HugeElem
+
 func newSlice() Elems {
 	return Elems{
 		{"A", 1},
@@ -36,5 +42,24 @@ func newPtrSlice() PtrElems {
 		{"H", 8},
 		{"J", 9},
 		{"K", 10},
+	}
+}
+
+func newHugeSlice() HugeElems {
+	return make(HugeElems, 10)
+}
+
+func newHugePtrSlice() HugePtrElems {
+	return HugePtrElems{
+		&HugeElem{},
+		&HugeElem{},
+		&HugeElem{},
+		&HugeElem{},
+		&HugeElem{},
+		&HugeElem{},
+		&HugeElem{},
+		&HugeElem{},
+		&HugeElem{},
+		&HugeElem{},
 	}
 }
