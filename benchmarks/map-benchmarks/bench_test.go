@@ -19,6 +19,7 @@ var (
 	intMap   map[string]int
 	st       S
 	sl       Elems
+	ptrSl    PtrElems
 )
 
 //go:embed testdata/json.json
@@ -39,6 +40,12 @@ func BenchmarkAllocMapInt(b *testing.B) {
 func BenchmarkAllocSlice(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		sl = newSlice()
+	}
+}
+
+func BenchmarkAllocPtrSlice(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		ptrSl = newPtrSlice()
 	}
 }
 
