@@ -20,7 +20,7 @@ linters:
     - stylecheck
     - structcheck
     - typecheck
-    - unused
+#    - unused
     - varcheck
 
 # Other linters:
