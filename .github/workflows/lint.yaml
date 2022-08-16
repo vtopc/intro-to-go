@@ -21,7 +21,7 @@ jobs:
       - name: Install Go
         uses: actions/setup-go@v3
         with:
-          go-version-file: ./go.mod
+          go-version-file: ./linters/go.mod
 
       - name: Cache/restore build and pkg cache
         uses: actions/cache@v3
