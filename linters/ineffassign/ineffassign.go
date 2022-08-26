@@ -4,7 +4,7 @@ func storeCounter(counter int) {
 	_ = counter
 }
 
-func ineffassign() {
+func fn() {
 	var counter int
 
 	// do something
