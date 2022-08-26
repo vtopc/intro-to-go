@@ -5,7 +5,6 @@ linters:
   disable-all: true
   enable:
     - bodyclose # https://github.com/timakin/bodyclose
-#    - deadcode
     - depguard
     - errcheck # Mandatory. Do not disable.
     - gocritic
@@ -18,10 +17,8 @@ linters:
     - ineffassign # Mandatory. Do not disable.
     - staticcheck # Mandatory. Do not disable.
     - stylecheck
-    - structcheck
     - typecheck
 #    - unused
-    - varcheck
 
 # Other linters:
 #    - dogsled
