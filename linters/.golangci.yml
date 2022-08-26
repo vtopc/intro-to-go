@@ -53,11 +53,8 @@ linters-settings:
       - performance
       - style
     disabled-checks:
-      - commentedOutCode
       - dupImport # https://github.com/go-critic/go-critic/issues/845
-      - octalLiteral
-      - wrapperFunc
-      - whyNoLint
+      - whyNoLint # checked by nolintlint
       - hugeParam # TODO: configure(80 bytes is probably not so much) and enable.
 
   errcheck:
