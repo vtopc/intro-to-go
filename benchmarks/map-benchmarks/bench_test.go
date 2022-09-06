@@ -12,6 +12,7 @@ const (
 	worstKey = "K"
 )
 
+// Global variable for Benchmarking - https://itnext.io/the-top-10-most-common-mistakes-ive-seen-in-go-projects-4b79d4f6cd65
 var (
 	iface     interface{}
 	i         int
