@@ -16,7 +16,7 @@ go fn(x, y, z)
 - [worker pool](https://gobyexample.com/worker-pools)
 - etc.
 
-    The semaphore is preferable in most cases, since with the pool there would be hanging workers, that doing nothing. 
+    The semaphore is preferable in most cases, since with the pool there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
 
 2. Check that it's possible to stop spawned goroutines.
 - use `context.Context` for cancellation
