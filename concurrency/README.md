@@ -23,7 +23,10 @@ go fn(x, y, z)
 
     The semaphore/errgroup is preferable in most cases, since with the worker pool there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
 
-3. Check that it's possible to stop spawned goroutines, e.g. on service shutdown:
-- use `context.Context` for cancellation
+3. It should be possible to stop spawned goroutines, e.g. on service shutdown. Use one of next for cancellation:
+- `context.Context`(preferable)
+- done channel
 
-4. **Panic.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
+4. [Never start a goroutine without knowing when it will stop](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_never_start_a_goroutine_without_knowing_when_it_will_stop).
+
+5 **Panic.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
