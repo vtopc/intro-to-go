@@ -10,7 +10,7 @@ go fn(x, y, z)
 
 ### Before spawning goroutine(checklist):
 
-1. Consider to write sync code. Goroutine is not a silver bullet, it wouldn't make code faster in all cases.
+1. Consider to write sync code. Concurrency in Go is not a silver bullet, it wouldn't make code faster in all cases.
 
     > Async code harder to understand and debug is. Hrrmmm.
 
