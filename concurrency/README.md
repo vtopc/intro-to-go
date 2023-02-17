@@ -12,7 +12,11 @@ go fn(x, y, z)
 
 1. Consider to write sync code. Goroutine is not a silver bullet, it wouldn't make code faster in all cases.
 
-    _Async code harder to understand and debug is. Hrrmmm._ Master Yoda
+    > Async code harder to understand and debug is. Hrrmmm.
+
+    Master Yoda
+
+    Also, there is no speed benefit in [example](./examples/README.md) for **one** CPU. And async solution consumes 50% more memory.
 
 
 2. Make sure, that there would be limited amount of running goroutines. Use one of next:
