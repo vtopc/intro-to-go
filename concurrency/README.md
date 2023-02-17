@@ -10,7 +10,12 @@ go fn(x, y, z)
 
 ### Before spawning goroutine(checklist):
 
-1. Make sure, that there would be limited amount of running goroutines. Use one of next:
+1. Consider to write sync code. Goroutine is not a silver bullet, it wouldn't make code faster in all cases.
+
+    _Async code harder to understand and debug is. Hrrmmm._ Master Yoda
+
+
+2. Make sure, that there would be limited amount of running goroutines. Use one of next:
 - use [semaphore](https://pkg.go.dev/golang.org/x/sync/semaphore)
 - use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with [SetLimit()](https://pkg.go.dev/golang.org/x/sync/errgroup#Group.SetLimit)
 - create [worker pool](https://gobyexample.com/worker-pools)
@@ -18,7 +23,7 @@ go fn(x, y, z)
 
     The semaphore/errgroup is preferable in most cases, since with the pool there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
 
-2. Check that it's possible to stop spawned goroutines, e.g. on service shutdown:
+3. Check that it's possible to stop spawned goroutines, e.g. on service shutdown:
 - use `context.Context` for cancellation
 
-3. **Panic.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
+4. **Panic.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
