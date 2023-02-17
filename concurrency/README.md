@@ -1,6 +1,14 @@
 # Concurrency
 
-## Before spawning goroutine(checklist):
+## Goroutines
+
+Every function spawned with `go` keyword creates new goroutine, e.g.:
+```go
+go fn(x, y, z)
+```
+[Check a tour of Go](https://go.dev/tour/concurrency/1)
+
+### Before spawning goroutine(checklist):
 
 1. Make sure, that there would be infinite amount of running goroutines use one of next:
 - [semaphore](https://pkg.go.dev/golang.org/x/sync/semaphore)
