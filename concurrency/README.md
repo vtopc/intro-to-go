@@ -37,6 +37,15 @@ On shutdown app should wait for all goroutines to stop.
 
 5. **Panics.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
 
-6. Don't make huge buffered channels. Channel is just a [data buffer](https://en.wikipedia.org/wiki/Data_buffer),
-don't try to feet all results there. 
-The channel consumer should be spawned before channel producer(writer) and write values into DB/cache/file/socket/map/slice or other data structure. 
+## Channels
+
+Channels are a typed conduit through which you can send and receive values.
+
+[Check a tour of Go](https://go.dev/tour/concurrency/2)
+
+### Channels usage checklist
+
+1. Don't make huge buffered channels. Channel is just a [data buffer](https://en.wikipedia.org/wiki/Data_buffer),
+don't try to feet all results there.
+
+2. The channel consumer should be spawned before channel producer(writer) and write values into DB/cache/file/socket/map/slice/other data structures. 
