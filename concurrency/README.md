@@ -12,11 +12,11 @@ go fn(x, y, z)
 
 1. Make sure, that there would be infinite amount of running goroutines use one of next:
 - use [semaphore](https://pkg.go.dev/golang.org/x/sync/semaphore)
-- use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with `SetLimit()`
+- use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with [SetLimit()](https://pkg.go.dev/golang.org/x/sync/errgroup#Group.SetLimit)
 - create [worker pool](https://gobyexample.com/worker-pools)
 - etc.
 
-    The semaphore is preferable in most cases, since with the pool there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
+    The semaphore/errgroup is preferable in most cases, since with the pool there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
 
 2. Check that it's possible to stop spawned goroutines, e.g. on service shutdown:
 - use `context.Context` for cancellation
