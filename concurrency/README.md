@@ -21,7 +21,7 @@ go fn(x, y, z)
 - create [worker pool](https://gobyexample.com/worker-pools)
 - etc.
 
-    The semaphore/errgroup is preferable in most cases, since with the pool there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
+    The semaphore/errgroup is preferable in most cases, since with the worker pool there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
 
 3. Check that it's possible to stop spawned goroutines, e.g. on service shutdown:
 - use `context.Context` for cancellation
