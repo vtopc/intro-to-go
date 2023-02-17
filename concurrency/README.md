@@ -39,4 +39,4 @@ On shutdown app should wait for all goroutines to stop.
 
 6. Don't make huge buffered channels. Channel is just a [data buffer](https://en.wikipedia.org/wiki/Data_buffer),
 don't try to feet all results there. 
-The channel consumer goroutine should be spawned before channel producer(writer) and write messages into DB/cache/file/socket/map/slice or other data structure. 
+The channel consumer should be spawned before channel producer(writer) and write values into DB/cache/file/socket/map/slice or other data structure. 
