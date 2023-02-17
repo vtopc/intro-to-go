@@ -19,7 +19,7 @@ go fn(x, y, z)
 - use [semaphore](https://pkg.go.dev/golang.org/x/sync/semaphore)
 - use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with [SetLimit()](https://pkg.go.dev/golang.org/x/sync/errgroup#Group.SetLimit)
 - create [worker pool](https://gobyexample.com/worker-pools) 
-- use pool from [conc](https://github.com/sourcegraph/conc) with `WithMaxGoroutines`.
+- use pool from [conc](https://github.com/sourcegraph/conc) with `WithMaxGoroutines`
 - etc.
 
     The semaphore/errgroup is preferable in most cases, since with the worker pool there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
