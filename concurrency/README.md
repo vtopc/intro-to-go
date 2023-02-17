@@ -16,7 +16,8 @@ go fn(x, y, z)
 
     Master Yoda
 
-    Also, there is no speed benefit in [example](./examples/README.md) for **one** CPU. And async solution consumes 50% more memory.
+    Also, there is no speed benefit in [this example](./examples/README.md) for **one** CPU. 
+    And async solution consumes 50% more memory.
 
 
 2. Make sure, that there would be limited amount of running goroutines. Use one of next:
