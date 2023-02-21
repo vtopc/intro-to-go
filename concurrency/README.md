@@ -38,6 +38,18 @@ On shutdown app should wait for all goroutines to stop.
 
 5. **Panics.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
 
+#### To sum up
+
+- either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) ...
+
+- or [conc](https://github.com/sourcegraph/conc)
+
+_TBA examples_
+
+### Tips and tricks
+
+- Add [profiler labels](https://rakyll.org/profiler-labels/), this would help to debug and read stacktrace.
+
 ## Channels
 
 Channels are a typed conduit through which you can send and receive values.
