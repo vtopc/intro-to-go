@@ -49,6 +49,8 @@ _TBA examples_
 ### Tips and tricks
 
 - Add [profiler labels](https://rakyll.org/profiler-labels/), this would help to debug and read stacktrace.
+- Use the race detector (`-race` flag) in unit tests.
+- Use [uber-go/goleak](https://github.com/uber-go/goleak) to detect goroutine leaks in your tests.
 
 ## Channels
 
@@ -62,3 +64,7 @@ Channels are a typed conduit through which you can send and receive values.
 don't try to feet all results there.
 
 2. The channel consumer should be spawned before channel producer(writer) and write values into DB/cache/file/socket/map/slice/other data structures. 
+
+3. Channel should be closed by the producer or based on some `sync.WaitGroup`/`sync.Once`.
+
+4. 
