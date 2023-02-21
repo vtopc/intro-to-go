@@ -8,7 +8,7 @@ go fn(x, y, z)
 ```
 [Check a tour of Go](https://go.dev/tour/concurrency/1)
 
-### Before spawning goroutine(checklist):
+### Before spawning a new goroutine(the checklist):
 
 1. Consider to write sync code. Concurrency in Go is not a silver bullet, it wouldn't make code faster in all cases.
 
