@@ -75,7 +75,7 @@ Channels are a typed conduit through which you can send and receive messages.
        to not only understand message passing  mechanisms well
        but also other synchronization mechanisms of Go.
 
-    https://songlh.github.io/paper/go-study.pdf
+    [Understanding Real-World Concurrency Bugs in Go](https://songlh.github.io/paper/go-study.pdf)
 
 2. Don't make huge buffered channels. Channel is just a [data buffer](https://en.wikipedia.org/wiki/Data_buffer),
 don't try to feet all results there.
