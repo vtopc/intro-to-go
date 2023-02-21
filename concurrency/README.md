@@ -20,7 +20,7 @@ go fn(x, y, z)
     And async solution consumes 50% more memory.
 
 
-2. Make sure, that there would be limited amount of running goroutines. Use one of next:
+2. Make sure, that there would be a limited amount of running goroutines. Use one of next:
 - use [semaphore](https://pkg.go.dev/golang.org/x/sync/semaphore)
 - use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with [SetLimit()](https://pkg.go.dev/golang.org/x/sync/errgroup#Group.SetLimit)
 - create [worker pool](https://gobyexample.com/worker-pools) 
