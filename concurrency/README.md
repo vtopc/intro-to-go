@@ -29,7 +29,7 @@ go fn(x, y, z)
 
     The semaphore/errgroup is preferable in most cases, since with the worker pool there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
 
-3. It should be possible to stop spawned goroutines, e.g. on service shutdown. Use one of next for cancellation:
+3. It should be possible to stop spawned goroutines, e.g. on service shutdown or HTTP timeout. Use one of next for cancellation:
 - `context.Context`(preferable)
 - done channel
 
