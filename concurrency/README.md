@@ -38,7 +38,7 @@ On shutdown app should wait for all goroutines to stop.
 
 5. **Panics.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
 
-#### To sum up
+#### The easiest way
 
 - either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) ...
 
@@ -59,7 +59,7 @@ Channels are a typed conduit through which you can send and receive values.
 
 [Check a tour of Go](https://go.dev/tour/concurrency/2)
 
-### Channels usage checklist
+### Possible channel issues
 
 1. Don't make huge buffered channels. Channel is just a [data buffer](https://en.wikipedia.org/wiki/Data_buffer),
 don't try to feet all results there.
@@ -69,4 +69,6 @@ don't try to feet all results there.
 3. Channel should be closed once either by the producer(if it's one)
 or with the help of `sync.WaitGroup`/`sync.Once`(if there are many producers).
 
-4. 
+4. Do not write into closed channel. However, reading from closed channel is OK.
+
+5. Do not send to or receive from a nil channel it will block forever.
