@@ -55,20 +55,36 @@ _TBA examples_
 
 ## Channels
 
-Channels are a typed conduit through which you can send and receive values.
+Channels are a typed conduit through which you can send and receive messages.
 
 [Check a tour of Go](https://go.dev/tour/concurrency/2)
 
 ### Possible channel issues
 
-1. Don't make huge buffered channels. Channel is just a [data buffer](https://en.wikipedia.org/wiki/Data_buffer),
+1. Consider using shared memory instead of message passing:
+
+    >  Our study found that message passing does not necessarily make multithreaded programs less error-prone than shared memory.
+       In fact, message passing is the main cause of blocking bugs.
+       To make it worse, when combined with traditional synchronization primitives or with other new language features
+       and libraries, message passing can cause blocking bugs that
+       are very hard to detect. Message passing causes less nonblocking bugs than shared memory synchronization and surprisingly, was even used to fix bugs that are caused by wrong
+       shared memory synchronization. We believe that message
+       passing offers a clean form of inter-thread communication
+       and can be useful in passing data and signals. But they are
+       only useful if used correctly, which requires programmers
+       to not only understand message passing  mechanisms well
+       but also other synchronization mechanisms of Go.
+
+    https://songlh.github.io/paper/go-study.pdf
+
+2. Don't make huge buffered channels. Channel is just a [data buffer](https://en.wikipedia.org/wiki/Data_buffer),
 don't try to feet all results there.
 
-2. The channel consumer should be spawned before channel producer(writer) and write values into DB/cache/file/socket/map/slice/other data structures. 
+3. The channel consumer should be spawned before channel producer(writer) and write values into DB/cache/file/socket/map/slice/other data structures. 
 
-3. Channel should be closed once either by the producer(if it's one)
+4. Channel should be closed once either by the producer(if it's one)
 or with the help of `sync.WaitGroup`/`sync.Once`(if there are many producers).
 
-4. Do not write into closed channel. However, reading from closed channel is OK.
+5. Do not write into closed channel. However, reading from closed channel is OK.
 
-5. Do not send to or receive from a nil channel it will block forever.
+6. Do not send to or receive from a nil channel it will block forever.
