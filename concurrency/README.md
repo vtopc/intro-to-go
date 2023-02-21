@@ -51,6 +51,7 @@ _TBA examples_
 - Add [profiler labels](https://rakyll.org/profiler-labels/), this would help to debug and read stacktrace.
 - Use the race detector (`-race` flag) in unit tests.
 - Use [uber-go/goleak](https://github.com/uber-go/goleak) to detect goroutine leaks in your tests.
+- You can [update pre-allocated slice concurrently](https://stackoverflow.com/questions/49879322/can-i-concurrently-write-different-slice-elements).
 
 ## Channels
 
@@ -65,6 +66,7 @@ don't try to feet all results there.
 
 2. The channel consumer should be spawned before channel producer(writer) and write values into DB/cache/file/socket/map/slice/other data structures. 
 
-3. Channel should be closed by the producer or based on some `sync.WaitGroup`/`sync.Once`.
+3. Channel should be closed once either by the producer(if it's one)
+or with the help of `sync.WaitGroup`/`sync.Once`(if there are many producers).
 
 4. 
