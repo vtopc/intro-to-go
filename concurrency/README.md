@@ -51,10 +51,11 @@ go fn(x, y, z)
 1. [Never start a goroutine without knowing when it will stop](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_never_start_a_goroutine_without_knowing_when_it_will_stop).
 On shutdown app should wait for all goroutines to stop.
 
-1. `wg.Add(...)` should be called before spawning goroutine.
-
 1. **Panics.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
 [Non-catchable example](https://play.golang.com/p/lVfDUZTz4ji).
+
+1. `wg.Add(...)` should be called before spawning goroutine.
+
 
 #### To sum up. The easiest ways.
 - either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) [e.g.](examples/errgroup/main.go) with panic recovery;
