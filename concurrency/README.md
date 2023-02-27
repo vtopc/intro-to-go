@@ -62,11 +62,7 @@ On shutdown app should wait for all goroutines to stop.
     p := New().WithMaxGoroutines(3)
     for i := 0; i < 5; i++ {
         p.Go(func() {
-            defer func() {
-		        if r := recover(); r != nil {
-			        fmt.Println("recovered panic:", r)
-		        }
-	        }()
+
   
             fmt.Println("conc")
         })
