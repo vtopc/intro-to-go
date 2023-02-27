@@ -37,7 +37,10 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	go getResults(respChan, doneChan)
 
 	for i, request := range requests {
-		log.Printf("sending request #%d", i)
+		id := i
+		req := request
+
+		log.Printf("sending request #%d", id)
 
 		g.Go(func() error {
 			defer func() {
@@ -46,7 +49,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 				}
 			}()
 
-			Work(request, respChan)
+			Work(id, req, respChan)
 
 			return nil
 		})
@@ -64,10 +67,10 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	<-doneChan // blocking
 }
 
-func Work(req []byte, respChan chan<- string) {
+func Work(id int, req []byte, respChan chan<- string) {
 	s := md5sum(req)
 
-	log.Printf("sending response: %s\n", s)
+	log.Printf("sending response #%d: %s\n", id, s)
 
 	respChan <- s
 }
