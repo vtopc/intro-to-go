@@ -33,7 +33,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 
 	go getResults(respChan, doneChan)
 
-	g, _ := errgroup.WithContext(ctx)
+	g, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel on error
 	g.SetLimit(TotalWorkers)
 
 	for i, request := range requests {
@@ -43,16 +43,16 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 
 		log.Printf("sending request #%d", id)
 
-		g.Go(func() error {
+		g.Go(func() (err error) {
 			defer func() {
 				if r := recover(); r != nil {
-					fmt.Println("recovered panic:", r)
+					err = fmt.Errorf("recovered panic: %s", r)
 				}
 			}()
 
 			Work(id, req, respChan)
 
-			return nil // or use `errgroup.Group` literal if you don't need to cancel on error
+			return nil
 		})
 	}
 
