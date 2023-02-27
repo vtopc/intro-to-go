@@ -96,8 +96,6 @@ On shutdown app should wait for all goroutines to stop.
     p.Wait()
     ```
 
-_TBA examples_
-
 ### Tips and tricks
 
 - Add [profiler labels](https://rakyll.org/profiler-labels/), this would help to debug and read stacktrace.
