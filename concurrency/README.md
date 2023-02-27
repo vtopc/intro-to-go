@@ -57,18 +57,7 @@ On shutdown app should wait for all goroutines to stop.
 [Non-catchable example](https://play.golang.com/p/lVfDUZTz4ji).
 
 #### To sum up. The easiest ways.
-- either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) ...
-    ```go
-    p := New().WithMaxGoroutines(3)
-    for i := 0; i < 5; i++ {
-        p.Go(func() {
-
-  
-            fmt.Println("conc")
-        })
-    }
-    p.Wait()
-    ```
+- either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) [e.g.](examples/errgroup/main.go)
 
 - or [sourcegraph/conc](https://github.com/sourcegraph/conc):
     ```go
