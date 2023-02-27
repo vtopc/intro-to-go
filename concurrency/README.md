@@ -109,7 +109,7 @@ Channels are a typed conduit through which you can send and receive messages.
 
 [Check a tour of Go](https://go.dev/tour/concurrency/2)
 
-### Possible channel issues
+### Commandments
 
 1. Consider using shared memory instead of message passing:
 
