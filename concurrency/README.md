@@ -19,7 +19,7 @@ go fn(x, y, z)
     Master Yoda
 
     e.g. there is no speed benefit in [this example](examples/workgroup/README.md) for **one** CPU,
-    and async solution consumes 50% more memory.
+    and async solution consumes 50%–100% more memory.
 
     Another example:
     ```go
@@ -52,7 +52,32 @@ go fn(x, y, z)
 On shutdown app should wait for all goroutines to stop.
 
 1. **Panics.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
-[Non-catchable example](https://play.golang.com/p/lVfDUZTz4ji).
+
+   [Non-catchable example](https://play.golang.com/p/lVfDUZTz4ji):
+    ```go
+    func f1() {
+        if true {
+            panic("f1")
+        }
+    
+        fmt.Println("f1 done")
+    }
+    
+    func main() {
+        defer func() {
+            if r := recover(); r != nil {
+                fmt.Println("recovered panic:", r)
+            }
+        }()
+    
+        go f1()
+    
+        for i := 0; i < 10; i++ {
+            fmt.Println("tick", i)
+            time.Sleep(time.Second)
+        }
+    }
+    ```
 
 1. `wg.Add(...)` should be called before spawning goroutine.
 
