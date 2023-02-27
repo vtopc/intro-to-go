@@ -10,7 +10,7 @@ go fn(x, y, z)
 
 ### Before spawning a new goroutine(the checklist):
 
-1. Consider to write sync code. Concurrency in Go is not a silver bullet, it wouldn't make code faster in all cases.
+1. Avoid Concurrency. Concurrency in Go is not a silver bullet, it wouldn't make code faster in all cases.
 
     > Async code harder to understand and debug is. Hrrmmm.
 
@@ -19,6 +19,19 @@ go fn(x, y, z)
     e.g. there is no speed benefit in [this example](./examples/README.md) for **one** CPU,
     and async solution consumes 50% more memory.
 
+    Another example:
+    ```go
+    var wg sync.WaitGroup
+
+    wg.Add(1)
+    go serve(&wg)
+    wg.Wait()
+    ```
+   
+    vs.:
+    ```go
+    serve()
+    ```
 
 2. Make sure, that there would be a limited amount of running goroutines. Use one of next:
 - use [semaphore](https://pkg.go.dev/golang.org/x/sync/semaphore)
@@ -89,3 +102,7 @@ or with the help of `sync.WaitGroup`/`sync.Once`(if there are many producers).
 5. Do not write into closed channel. However, reading from closed channel is OK.
 
 6. Do not send to or receive from a nil channel it will block forever.
+
+## More
+
+- Egon Elbre - Production Ready Concurrency([read](https://www.storj.io/blog/production-concurrency) and [watch](https://www.youtube.com/watch?v=qq3gu0JQ0yU))
