@@ -60,7 +60,7 @@ On shutdown app should wait for all goroutines to stop.
 
 - either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) ...
 
-- or [conc](https://github.com/sourcegraph/conc)
+- or [sourcegraph/conc](https://github.com/sourcegraph/conc)
 
 _TBA examples_
 
