@@ -36,7 +36,7 @@ go fn(x, y, z)
     ```
 
 1. Make sure, that there would be a limited amount of running goroutines. Use one of next:
-   - use [semaphore](https://pkg.go.dev/golang.org/x/sync/semaphore) before spawning a new goroutine.
+   - use [semaphore](https://pkg.go.dev/golang.org/x/sync/semaphore) or just some `make(chan struct{}, N)` before spawning a new goroutine. 
    - use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with [SetLimit()](https://pkg.go.dev/golang.org/x/sync/errgroup#Group.SetLimit)
    - use pool from [conc](https://github.com/sourcegraph/conc) with `WithMaxGoroutines`
    - create [worker pool](https://gobyexample.com/worker-pools). Shouldn't be used in most cases since there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
