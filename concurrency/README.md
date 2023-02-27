@@ -10,7 +10,7 @@ go fn(x, y, z)
 
 ### Before spawning a new goroutine(the checklist):
 
-1. Avoid Concurrency.
+0. Avoid Concurrency.
 
     Concurrency in Go is not a silver bullet, it wouldn't make code faster in all cases.
 
