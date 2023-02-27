@@ -10,7 +10,9 @@ go fn(x, y, z)
 
 ### Before spawning a new goroutine(the checklist):
 
-1. Avoid Concurrency. Concurrency in Go is not a silver bullet, it wouldn't make code faster in all cases.
+1. Avoid Concurrency.
+
+    Concurrency in Go is not a silver bullet, it wouldn't make code faster in all cases.
 
     > Async code harder to understand and debug is. Hrrmmm.
 
@@ -33,23 +35,23 @@ go fn(x, y, z)
     serve()
     ```
 
-2. Make sure, that there would be a limited amount of running goroutines. Use one of next:
-- use [semaphore](https://pkg.go.dev/golang.org/x/sync/semaphore)
-- use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with [SetLimit()](https://pkg.go.dev/golang.org/x/sync/errgroup#Group.SetLimit)
-- create [worker pool](https://gobyexample.com/worker-pools) 
-- use pool from [conc](https://github.com/sourcegraph/conc) with `WithMaxGoroutines`
-- etc.
+1. Make sure, that there would be a limited amount of running goroutines. Use one of next:
+   - use [semaphore](https://pkg.go.dev/golang.org/x/sync/semaphore)
+   - use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with [SetLimit()](https://pkg.go.dev/golang.org/x/sync/errgroup#Group.SetLimit)
+   - create [worker pool](https://gobyexample.com/worker-pools) 
+   - use pool from [conc](https://github.com/sourcegraph/conc) with `WithMaxGoroutines`
+   - etc.
 
-    The semaphore/errgroup is preferable in most cases, since with the worker pool there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
+       The semaphore/errgroup is preferable in most cases, since with the worker pool there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
 
-3. It should be possible to stop spawned goroutines, e.g. on service shutdown or HTTP timeout. Use one of next for cancellation:
-- `context.Context`(preferable)
-- done channel
+1. It should be possible to stop spawned goroutines, e.g. on service shutdown or HTTP timeout. Use one of next for cancellation:
+    - `context.Context`(preferable)
+    - done channel
 
-4. [Never start a goroutine without knowing when it will stop](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_never_start_a_goroutine_without_knowing_when_it_will_stop). 
+1. [Never start a goroutine without knowing when it will stop](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_never_start_a_goroutine_without_knowing_when_it_will_stop).
 On shutdown app should wait for all goroutines to stop.
 
-5. **Panics.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
+1. **Panics.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
 [Non-catchable example](https://play.golang.com/p/lVfDUZTz4ji).
 
 #### To sum up. The easiest ways.
