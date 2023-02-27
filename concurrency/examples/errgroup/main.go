@@ -51,7 +51,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 
 			Work(id, req, respChan)
 
-			return nil
+			return nil // use `errgroup.Group` literal if you don't need to cancel on error
 		})
 	}
 
