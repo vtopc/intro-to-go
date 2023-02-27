@@ -39,7 +39,7 @@ go fn(x, y, z)
    - use [semaphore](https://pkg.go.dev/golang.org/x/sync/semaphore) or just some `make(chan struct{}, N)` before spawning a new goroutine. 
    - use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with [SetLimit()](https://pkg.go.dev/golang.org/x/sync/errgroup#Group.SetLimit)
    - use pool from [conc](https://github.com/sourcegraph/conc) with `WithMaxGoroutines`
-   - create [worker pool](https://gobyexample.com/worker-pools). Shouldn't be used in most cases since there would be hanging workers, that doing nothing and spawning a new goroutine is quite cheap.
+   - create [worker pool](https://gobyexample.com/worker-pools). Shouldn't be used in most cases since there would be hanging workers, that are doing nothing and spawning a new goroutine is quite cheap.
    - etc.
 
 1. It should be possible to stop spawned goroutines, e.g. on service shutdown or HTTP timeout. Use one of next for cancellation:
@@ -85,20 +85,7 @@ On shutdown app should wait for all goroutines to stop.
 #### To sum up. The easiest ways.
 - either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with panic recovery, [e.g.](examples/errgroup/main.go);
 
-- or [sourcegraph/conc](https://github.com/sourcegraph/conc/tree/main/pool), e.g.:
-    ```go
-    p := New().WithMaxGoroutines(3)
-    for i := 0; i < 5; i++ {
-        p.Go(func() {  
-            fmt.Println("conc")
-        })
-    }
-    p.Wait()
-    ```
-  
-  [example with panic](https://play.golang.com/p/dRe4UX5uu2H)
-
-    TODO: use https://pkg.go.dev/github.com/sourcegraph/conc@v0.3.0#WaitGroup.WaitAndRecover
+- or use [sourcegraph/conc.WaitGroup](https://pkg.go.dev/github.com/sourcegraph/conc@v0.3.0#WaitGroup.WaitAndRecover) with semaphore.
 
 ### Tips and tricks
 
