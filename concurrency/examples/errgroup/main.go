@@ -37,6 +37,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	g.SetLimit(TotalWorkers)
 
 	for i, request := range requests {
+		// https://github.com/golang/go/wiki/CommonMistakes/#using-goroutines-on-loop-iterator-variables
 		id := i
 		req := request
 
