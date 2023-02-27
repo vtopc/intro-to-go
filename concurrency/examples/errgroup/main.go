@@ -31,10 +31,10 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 
 	doneChan := make(chan struct{}, 1)
 
+	go getResults(respChan, doneChan)
+
 	g, _ := errgroup.WithContext(ctx)
 	g.SetLimit(TotalWorkers)
-
-	go getResults(respChan, doneChan)
 
 	for i, request := range requests {
 		id := i
