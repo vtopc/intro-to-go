@@ -18,7 +18,7 @@ go fn(x, y, z)
 
     Master Yoda
 
-    e.g. there is no speed benefit in [this example](examples/md5/README.md) for **one** CPU,
+    e.g. there is no speed benefit in [this example](examples/workgroup/README.md) for **one** CPU,
     and async solution consumes 50% more memory.
 
     Another example:
