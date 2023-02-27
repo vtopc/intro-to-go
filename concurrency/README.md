@@ -83,7 +83,7 @@ On shutdown app should wait for all goroutines to stop.
 
 
 #### To sum up. The easiest ways.
-- either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) [e.g.](examples/errgroup/main.go) with panic recovery;
+- either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with panic recovery, [e.g.](examples/errgroup/main.go);
 
 - or [sourcegraph/conc](https://github.com/sourcegraph/conc), e.g.:
     ```go
