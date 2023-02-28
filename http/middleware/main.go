@@ -21,7 +21,9 @@ func loggingMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 // Handler function that returns a simple message
 func helloHandler(w http.ResponseWriter, r *http.Request) {
-	ReqWithUserID(r, "42")
+	ctx := CtxWithUserID(r.Context(), "42")
+
+	ReqWithCtx(ctx, r)
 
 	_, _ = w.Write([]byte("Hello, World!"))
 }

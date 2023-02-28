@@ -7,10 +7,11 @@ import (
 
 var userIDContextKey struct{}
 
-// ReqWithUserID updated r with userID
-func ReqWithUserID(r *http.Request, userID string) {
-	ctx := context.WithValue(r.Context(), userIDContextKey, userID)
+func CtxWithUserID(ctx context.Context, userID string) context.Context {
+	return context.WithValue(ctx, userIDContextKey, userID)
+}
 
+func ReqWithCtx(ctx context.Context, r *http.Request) {
 	req := r.Clone(ctx)
 	*r = *req
 }
