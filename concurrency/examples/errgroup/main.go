@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"fmt"
 	"log"
+	"sync"
 
 	"golang.org/x/sync/errgroup"
 )
@@ -29,11 +30,11 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	reqChan := make(chan []byte, TotalWorkers)
 	respChan := make(chan string, TotalWorkers)
 
-	doneChan := make(chan struct{}, 1)
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go getResults(respChan, &wg)
 
-	go getResults(respChan, doneChan)
-
-	g, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel on error
+	g, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel on first error
 	g.SetLimit(TotalWorkers)
 
 	for i, request := range requests {
@@ -65,7 +66,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 
 	close(respChan)
 
-	<-doneChan // blocking
+	wg.Wait() // blocking
 }
 
 func Work(id int, req []byte, respChan chan<- string) {
@@ -76,7 +77,7 @@ func Work(id int, req []byte, respChan chan<- string) {
 	respChan <- s
 }
 
-func getResults(respChan <-chan string, doneChan chan<- struct{}) {
+func getResults(respChan <-chan string, wg *sync.WaitGroup) {
 	batchSize := Count
 	res := make([]string, 0, batchSize)
 
@@ -103,7 +104,7 @@ func getResults(respChan <-chan string, doneChan chan<- struct{}) {
 
 	// all results are saved
 
-	close(doneChan)
+	wg.Done()
 }
 
 func generateRequest(length int) [][]byte {
