@@ -5,7 +5,6 @@ This is an example of errgroup and done channel.
 ## Benchmarks
 
 ```shell
-# make bench
 go test -bench=. -cpu=1,2,4,8,12,16,24,32 -benchmem
 2023/02/27 14:07:14 generated requests
 goos: darwin

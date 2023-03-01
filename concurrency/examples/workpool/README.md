@@ -5,7 +5,6 @@ This is an example of wait groups and done channel.
 ## Benchmarks
 
 ```shell
-# make bench
 go test -bench=. -cpu=1,2,4,8,12,16,24,32 -benchmem
 2023/02/27 14:09:16 generated requests
 goos: darwin
