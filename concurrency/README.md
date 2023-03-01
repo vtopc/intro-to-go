@@ -94,7 +94,7 @@ Use one of next:
 ### Tips and tricks
 
 - Add [profiler labels](https://rakyll.org/profiler-labels/), this would help to debug and read stacktrace.
-- Use the race detector (`-race` flag) in unit tests.
+- Use the race detector (`-race` flag) and `t.Parallel()` in unit tests.
 - Use [uber-go/goleak](https://github.com/uber-go/goleak) to detect goroutine leaks in your tests.
 - You can [update pre-allocated slice concurrently](https://stackoverflow.com/questions/49879322/can-i-concurrently-write-different-slice-elements).
 
