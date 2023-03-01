@@ -85,7 +85,6 @@ Use one of next:
 
 1. `wg.Add(...)` should be called before spawning goroutine.
 
-
 #### To sum up. The easiest ways.
 - either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with panic recovery, [e.g.](examples/errgroup/main.go);
 
