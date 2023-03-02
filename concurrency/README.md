@@ -107,11 +107,15 @@ Channels are a typed conduit through which you can send and receive messages.
 
 1. Consider using shared memory instead of message passing:
 
-    >  Our study found that message passing does not necessarily make multithreaded programs less error-prone than shared memory.
+    >  Our study found that message passing does not necessarily make 
+       multithreaded programs less error-prone than shared memory.
        In fact, message passing is the main cause of blocking bugs.
-       To make it worse, when combined with traditional synchronization primitives or with other new language features
+       To make it worse, when combined with traditional synchronization 
+       primitives or with other new language features
        and libraries, message passing can cause blocking bugs that
-       are very hard to detect. Message passing causes less nonblocking bugs than shared memory synchronization and surprisingly, was even used to fix bugs that are caused by wrong
+       are very hard to detect. Message passing causes less nonblocking bugs 
+       than shared memory synchronization and surprisingly, 
+       was even used to fix bugs that are caused by wrong
        shared memory synchronization. We believe that message
        passing offers a clean form of inter-thread communication
        and can be useful in passing data and signals. But they are
@@ -121,17 +125,19 @@ Channels are a typed conduit through which you can send and receive messages.
 
     [Understanding Real-World Concurrency Bugs in Go](https://songlh.github.io/paper/go-study.pdf)
 
-2. Don't make huge buffered channels. Channel is just a [data buffer](https://en.wikipedia.org/wiki/Data_buffer),
+1. Don't make huge buffered channels. Channel is just a [data buffer](https://en.wikipedia.org/wiki/Data_buffer),
 don't try to feet all results there.
 
-3. The channel consumer should be spawned before channel producer(writer) and write values into DB/cache/file/socket/map/slice/other data structures. 
+1. Channel consumer should write values into DB/cache/file/socket/map/slice/other data structures.
 
-4. Channel should be closed once either by the producer(if it's one)
+1. If channel producer(writer) is not spawned in goroutine the channel consumer should be spawned before it.
+
+1. Channel should be closed once either by the producer(if it's one)
 or with the help of `sync.WaitGroup`/`sync.Once`(if there are many producers).
 
-5. Do not write into closed channel. However, reading from closed channel is OK.
+1. Do not write into closed channel. However, reading from closed channel is OK.
 
-6. Do not send to or receive from a nil channel it will block forever.
+1. Do not send to or receive from a nil channel it will block forever.
 
 ## More
 
