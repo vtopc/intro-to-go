@@ -65,7 +65,7 @@ func Work(ctx context.Context, id int, wg *sync.WaitGroup, reqChan <-chan []byte
 			log.Printf("worker #%d: send: %s\n", id, s)
 
 		case <-ctx.Done():
-			log.Printf("worker #%d: stopping", id)
+			log.Printf("worker #%d: stopping\n", id)
 			return
 		}
 	}

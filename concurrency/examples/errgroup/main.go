@@ -51,7 +51,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 				}
 			}()
 
-			Work(id, req, respChan)
+			Work(ctx, id, req, respChan)
 
 			return nil
 		})
@@ -69,12 +69,17 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	resultsWG.Wait() // blocking
 }
 
-func Work(id int, req []byte, respChan chan<- string) {
+func Work(ctx context.Context, id int, req []byte, respChan chan<- string) {
 	s := md5sum(req)
 
-	log.Printf("sending response #%d: %s\n", id, s)
+	select {
+	case respChan <- s:
+		log.Printf("worker #%d: send: %s\n", id, s)
 
-	respChan <- s
+	case <-ctx.Done():
+		log.Printf("worker #%d: stopping\n", id)
+		return
+	}
 }
 
 func getResults(respChan <-chan string, wg *sync.WaitGroup) {
