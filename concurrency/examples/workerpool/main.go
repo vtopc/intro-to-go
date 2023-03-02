@@ -41,6 +41,8 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 		close(reqChan)
 	}()
 
+	go getResults(respChan, doneChan)
+
 	wg.Add(TotalWorkers)
 	for id := 1; id <= TotalWorkers; id++ {
 		// starting workers
@@ -48,8 +50,6 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	}
 
 	go resChanCloser(&wg, respChan)
-
-	go getResults(respChan, doneChan)
 
 	<-doneChan // blocking
 }
