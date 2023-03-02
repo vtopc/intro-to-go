@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/md5"
 	"crypto/rand"
 	"fmt"
@@ -16,12 +17,12 @@ const (
 func main() {
 	requests := generateRequest(Count)
 
-	DoAsync(requests)
+	DoAsync(context.TODO(), requests)
 
 	// DoSync(requests)
 }
 
-func DoAsync(requests [][]byte) {
+func DoAsync(ctx context.Context, requests [][]byte) {
 	var wg sync.WaitGroup
 
 	// chan buffer should be tuned to the value when channels are not exhausted
@@ -44,7 +45,7 @@ func DoAsync(requests [][]byte) {
 	// TODO: use limiter instead:
 	for id := 1; id <= TotalWorkers; id++ {
 		// starting workers
-		go Work(id, &wg, reqChan, respChan)
+		go Work(ctx, id, &wg, reqChan, respChan)
 	}
 
 	go resChanCloser(&wg, respChan)
@@ -54,15 +55,20 @@ func DoAsync(requests [][]byte) {
 	<-doneChan // blocking
 }
 
-func Work(id int, wg *sync.WaitGroup, reqChan <-chan []byte, respChan chan<- string) {
+func Work(ctx context.Context, id int, wg *sync.WaitGroup, reqChan <-chan []byte, respChan chan<- string) {
 	log.Printf("worker #%d: started\n", id)
 
 	for data := range reqChan {
 		s := md5sum(data)
 
-		log.Printf("worker #%d: sending: %s\n", id, s)
+		select {
+		case respChan <- s:
+			log.Printf("worker #%d: send: %s\n", id, s)
 
-		respChan <- s
+		case <-ctx.Done():
+			log.Printf("worker #%d: stopping", id)
+			return
+		}
 	}
 
 	log.Printf("worker #%d: done\n", id)
