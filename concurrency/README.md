@@ -19,7 +19,7 @@ go fn(x, y, z)
     Master Yoda
 
     e.g. there is no speed benefit in [this example](examples/workerpool/README.md) for **one** CPU,
-    and async solution consumes 50%–100% more memory.
+    and async solution consumes [50%](examples/workerpool/README.md#benchmarks)–[100%](examples/errgroup/README.md#benchmarks) more memory.
 
     Another example:
     ```go
@@ -44,7 +44,7 @@ go fn(x, y, z)
 
 1. It should be possible to stop spawned goroutines, e.g. on service shutdown or HTTP timeout. Use one of next for cancellation:
     - `context.Context`(preferable)
-    - ~~done channel~~(kinda legacy and hard to use)
+    - ~~done channel~~(kinda legacy and hard to use with APIs)
 
     Also write context aware code.
 

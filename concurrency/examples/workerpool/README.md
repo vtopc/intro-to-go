@@ -1,6 +1,6 @@
-# wg
+# Worker pool
 
-This is an example of wait groups and done channel.
+This is an example of sync.WaitGroup and done channel.
 
 ## Benchmarks
 

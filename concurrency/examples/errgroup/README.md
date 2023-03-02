@@ -1,6 +1,6 @@
 # errgroup
 
-This is an example of errgroup and done channel.
+This is an example of errgroup.
 
 ## Benchmarks
 
