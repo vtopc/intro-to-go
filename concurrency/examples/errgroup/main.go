@@ -30,9 +30,9 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	reqChan := make(chan []byte, TotalWorkers)
 	respChan := make(chan string, TotalWorkers)
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go getResults(respChan, &wg)
+	var resultsWG sync.WaitGroup
+	resultsWG.Add(1)
+	go getResults(respChan, &resultsWG)
 
 	g, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel on first error
 	g.SetLimit(TotalWorkers)
@@ -66,7 +66,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 
 	close(respChan)
 
-	wg.Wait() // blocking
+	resultsWG.Wait() // blocking
 }
 
 func Work(id int, req []byte, respChan chan<- string) {
