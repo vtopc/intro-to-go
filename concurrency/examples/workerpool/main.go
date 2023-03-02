@@ -42,7 +42,6 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	}()
 
 	wg.Add(TotalWorkers)
-	// TODO: use limiter instead:
 	for id := 1; id <= TotalWorkers; id++ {
 		// starting workers
 		go Work(ctx, id, &wg, reqChan, respChan)
