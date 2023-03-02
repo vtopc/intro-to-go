@@ -27,7 +27,6 @@ func main() {
 func DoAsync(ctx context.Context, requests [][]byte) {
 	// chan buffer should be tuned to the value when channels are not exhausted
 	//  and workers are not waiting for the input:
-	reqChan := make(chan []byte, TotalWorkers)
 	respChan := make(chan string, TotalWorkers)
 
 	var resultsWG sync.WaitGroup
@@ -56,8 +55,6 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 			return nil
 		})
 	}
-
-	close(reqChan)
 
 	err := g.Wait() // blocking
 	if err != nil {
