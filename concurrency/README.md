@@ -83,7 +83,7 @@ Use one of next:
     }
     ```
 
-1. `wg.Add(...)` should be called before spawning goroutine.
+1. `wg.Add(...)` should be called before running goroutine.
 
 #### To sum up. The easiest ways.
 - either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with panic recovery, [e.g.](examples/errgroup/main.go);
@@ -130,7 +130,7 @@ don't try to feet all results there.
 
 1. Channel consumer should write values into DB/cache/file/socket/map/slice/other data structures.
 
-1. If channel producer(writer) is not spawned in goroutine the channel consumer should be spawned before it.
+1. If channel producer(writer) is not running in goroutine the channel consumer should be spawned before it.
 
 1. Channel should be closed once either by the producer(if it's one)
 or with the help of `sync.WaitGroup`/`sync.Once`(if there are many producers).
