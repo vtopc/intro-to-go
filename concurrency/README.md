@@ -53,7 +53,7 @@ e.g. on shutdown app should wait for all goroutines to stop.
 Use one of next:
    - `sync.WaitGroup`
    - `context.Context` returned by goroutine spawner, e.g. [errgroup.WithContext](https://pkg.go.dev/golang.org/x/sync/errgroup#WithContext)
-   - ~~done channel~~(could wait only one goroutine to stop)
+   - ~~done channel~~(could wait only for one goroutine to stop)
 
 1. **Panics.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
 
