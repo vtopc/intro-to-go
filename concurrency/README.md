@@ -42,7 +42,7 @@ go fn(x, y, z)
    - create [worker pool](https://gobyexample.com/worker-pools). Shouldn't be used in most cases since there would be hanging workers, that are doing nothing and spawning a new goroutine is quite cheap.
    - etc.
 
-1. It should be possible to stop spawned goroutines, e.g. on service shutdown or HTTP timeout. Use one of next for cancellation:
+1. It should be possible to stop running goroutines, e.g. on service shutdown or HTTP timeout. Use one of next for cancellation:
     - `context.Context`(preferable)
     - ~~done channel~~(kinda legacy and hard to use with APIs)
 
