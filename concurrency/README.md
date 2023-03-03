@@ -82,6 +82,8 @@ Use one of next:
         }
     }
     ```
+   
+    Also, [panic could block goroutine forever](https://play.golang.com/p/M1BQA9cBlCE).
 
 1. `wg.Add(...)` should be called before running goroutine.
 
