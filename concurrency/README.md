@@ -83,7 +83,8 @@ Use one of next:
     }
     ```
    
-    Also, [panic could block goroutine forever](https://play.golang.com/p/M1BQA9cBlCE).
+    Also, [panic could block goroutine forever](https://play.golang.com/p/FCvgacdAEuw), 
+so call `mu.Unlock`, `wg.Wait` or `close(ch)` in defers.
 
 1. `wg.Add(...)` should be called before running goroutine.
 
