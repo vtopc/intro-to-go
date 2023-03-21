@@ -49,6 +49,8 @@ go fn(x, y, z)
     Also write context aware code.
 
 1. [Never start a goroutine without knowing when it will stop](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_never_start_a_goroutine_without_knowing_when_it_will_stop).
+
+    or [when you spawn goroutines, make it clear when or whether they exit.](https://google.github.io/styleguide/go/decisions#goroutine-lifetimes)
 e.g. on shutdown app should wait for all goroutines to stop.
 Use one of next:
    - `sync.WaitGroup`
