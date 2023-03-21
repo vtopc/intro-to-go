@@ -50,12 +50,14 @@ go fn(x, y, z)
 
 1. [Never start a goroutine without knowing when it will stop](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_never_start_a_goroutine_without_knowing_when_it_will_stop).
 
-    or [when you spawn goroutines, make it clear when or whether they exit.](https://google.github.io/styleguide/go/decisions#goroutine-lifetimes)
-e.g. on shutdown app should wait for all goroutines to stop.
-Use one of next:
+   e.g. on shutdown app should wait for all goroutines to stop.
+
+   Use one of next:
    - `sync.WaitGroup`
    - `context.Context` returned by goroutine spawner, e.g. [errgroup.WithContext](https://pkg.go.dev/golang.org/x/sync/errgroup#WithContext)
-   - ~~done channel~~(could wait only for one goroutine to stop)
+     - ~~done channel~~(could wait only for one goroutine to stop)
+
+   See also: [when you spawn goroutines, make it clear when or whether they exit.](https://google.github.io/styleguide/go/decisions#goroutine-lifetimes)
 
 1. **Panics.** Recover could catch panic only in current goroutine, so make sure, that [panic is handled in goroutine](https://medium.com/codex/handle-panic-in-go-routine-54b82d6013d3).
 
