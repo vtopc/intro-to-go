@@ -2,6 +2,15 @@
 
 This is an example of [sourcegraph/conc](github.com/sourcegraph/conc).
 
+## Pros
+
+- Boilerplate
+- Propagates panic to parent goroutine.
+
+## Cons
+
+- Doesn't fit for batching or any kind of workers.
+
 ## Benchmarks
 
 ```shell
