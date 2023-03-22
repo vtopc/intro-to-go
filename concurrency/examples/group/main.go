@@ -26,8 +26,8 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	resultsWG.Add(1)
 	go getResults(respChan, &resultsWG)
 
-	group, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel on first error
-	group.SetLimit(concurrency.TotalWorkers)
+	g, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel on first error
+	g.SetLimit(concurrency.TotalWorkers)
 
 	for i, request := range requests {
 		// https://github.com/golang/go/wiki/CommonMistakes/#using-goroutines-on-loop-iterator-variables
@@ -36,7 +36,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 
 		log.Printf("sending request #%d", id)
 
-		group.Go(func() (err error) {
+		g.Go(func() (err error) {
 			defer func() {
 				if r := recover(); r != nil {
 					err = fmt.Errorf("recovered panic: %s", r)
@@ -49,7 +49,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 		})
 	}
 
-	err := group.Wait() // blocking
+	err := g.Wait() // blocking
 	if err != nil {
 		fmt.Println("worker error:", err)
 	}
