@@ -15,8 +15,8 @@ func init() {
 	log.SetOutput(io.Discard)
 }
 
-func BenchmarkWorkerPool(b *testing.B) {
+func BenchmarkErrGroup(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		DoAsync(context.Background(), requests)
+		DoAsync(context.TODO(), requests)
 	}
 }

@@ -2,24 +2,16 @@ package main
 
 import (
 	"context"
-	"crypto/md5"
-	"crypto/rand"
-	"fmt"
 	"log"
 	"sync"
-)
 
-const (
-	Count        = 50
-	TotalWorkers = 5
+	"concurrency"
 )
 
 func main() {
-	requests := generateRequest(Count)
+	requests := concurrency.GenerateRequests(concurrency.Count)
 
 	DoAsync(context.TODO(), requests)
-
-	// DoSync(requests)
 }
 
 func DoAsync(ctx context.Context, requests [][]byte) {
@@ -27,8 +19,8 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 
 	// chan buffer should be tuned to the value when channels are not exhausted
 	//  and workers are not waiting for the input:
-	reqChan := make(chan []byte, TotalWorkers)
-	respChan := make(chan string, TotalWorkers)
+	reqChan := make(chan []byte, concurrency.TotalWorkers)
+	respChan := make(chan string, concurrency.TotalWorkers)
 
 	doneChan := make(chan struct{}, 1)
 
@@ -43,8 +35,8 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 
 	go getResults(respChan, doneChan)
 
-	wg.Add(TotalWorkers)
-	for id := 1; id <= TotalWorkers; id++ {
+	wg.Add(concurrency.TotalWorkers)
+	for id := 1; id <= concurrency.TotalWorkers; id++ {
 		// starting workers
 		go Work(ctx, id, &wg, reqChan, respChan)
 	}
@@ -58,7 +50,7 @@ func Work(ctx context.Context, id int, wg *sync.WaitGroup, reqChan <-chan []byte
 	log.Printf("worker #%d: started\n", id)
 
 	for data := range reqChan {
-		s := md5sum(data)
+		s := concurrency.Md5sum(data)
 
 		select {
 		case respChan <- s:
@@ -83,7 +75,7 @@ func resChanCloser(wg *sync.WaitGroup, respChan chan<- string) {
 }
 
 func getResults(respChan <-chan string, doneChan chan<- struct{}) {
-	batchSize := Count
+	batchSize := concurrency.Count
 	res := make([]string, 0, batchSize)
 
 	for {
@@ -110,46 +102,4 @@ func getResults(respChan <-chan string, doneChan chan<- struct{}) {
 	// all results are saved
 
 	close(doneChan)
-}
-
-func generateRequest(length int) [][]byte {
-	res := make([][]byte, 0, length)
-
-	for i := 1; i <= length; i++ {
-		b := make([]byte, 2*1024*1024) // 2 Mb
-
-		_, err := rand.Read(b)
-		if err != nil {
-			panic(fmt.Errorf("random failed: %s", err))
-		}
-
-		res = append(res, b)
-	}
-
-	log.Println("generated requests")
-
-	return res
-}
-
-func md5sum(data []byte) string {
-	// time.Sleep(100 * time.Millisecond)
-
-	return fmt.Sprintf("%x", md5.Sum(data))
-}
-
-func DoSync(requests [][]byte) {
-	res := make([]string, 0, Count)
-
-	for i, request := range requests {
-		log.Printf("sending request #%d\n", i)
-
-		s := md5sum(request)
-
-		log.Printf("saving: %s\n", s)
-
-		res = append(res, s)
-		log.Printf("saved: %s\n", s)
-	}
-
-	log.Println("results:", res)
 }
