@@ -1,0 +1,24 @@
+# conc
+
+This is an example of [sourcegraph/conc](github.com/sourcegraph/conc).
+
+## Benchmarks
+
+```shell
+go test -bench=. -cpu=1,2,4,8,12,16,24,32 -benchmem ./...
+?   	concurrency	[no test files]
+goos: darwin
+goarch: amd64
+pkg: concurrency/examples/conc
+cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
+BenchmarkConcPool       	      40	 138190589 ns/op	   10564 B/op	     271 allocs/op
+BenchmarkConcPool-2     	      16	  67967610 ns/op	   10796 B/op	     272 allocs/op
+BenchmarkConcPool-4     	      30	  34918573 ns/op	   10609 B/op	     271 allocs/op
+BenchmarkConcPool-8     	      42	  27190270 ns/op	   10613 B/op	     271 allocs/op
+BenchmarkConcPool-12    	      42	  28033095 ns/op	   10600 B/op	     271 allocs/op
+BenchmarkConcPool-16    	      40	  27211275 ns/op	   10629 B/op	     271 allocs/op
+BenchmarkConcPool-24    	      40	  28864739 ns/op	   10637 B/op	     271 allocs/op
+BenchmarkConcPool-32    	      42	  27131906 ns/op	   10711 B/op	     271 allocs/op
+PASS
+ok  	concurrency/examples/conc	16.034s
+```
