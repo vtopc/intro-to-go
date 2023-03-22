@@ -2,6 +2,17 @@
 
 This is an example of errgroup.
 
+## Pros
+
+- Might be added to the built-in `sync` package soon(or never).
+- Goroutine stack starts at 2Kb only (as of Go 1.19), so it's almost free to start a new goroutine.
+- Has context cancellation.
+- Limits number of goroutines.
+
+## Cons
+
+- Doesn't recover panics.
+
 ## Benchmarks
 
 ```shell

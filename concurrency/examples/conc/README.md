@@ -2,14 +2,21 @@
 
 This is an example of [sourcegraph/conc](github.com/sourcegraph/conc).
 
+## Features
+
+- Has different [iterators](https://pkg.go.dev/github.com/sourcegraph/conc@v0.3.0/iter).
+- Propagates panic to parent goroutines.
+
 ## Pros
 
-- Boilerplate
-- Propagates panic to parent goroutine.
+- Boilerplate.
+- Goroutine stack starts at 2Kb only (as of Go 1.19), so it's almost free to start a new goroutine.
+- Has context cancellation.
+- Limits number of goroutine.
 
 ## Cons
 
-- Doesn't fit for batching or any kind of workers.
+- Too smart. Doesn't fit for batching or any kind of workers.
 
 ## Benchmarks
 
