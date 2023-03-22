@@ -4,6 +4,7 @@ This is an example of [sourcegraph/conc](github.com/sourcegraph/conc).
 
 ## Features
 
+- Use generics.
 - Has different [iterators](https://pkg.go.dev/github.com/sourcegraph/conc@v0.3.0/iter).
 - Propagates panic to parent goroutines.
 
