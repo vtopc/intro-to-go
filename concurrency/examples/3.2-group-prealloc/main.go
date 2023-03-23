@@ -20,7 +20,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	// https://stackoverflow.com/questions/49879322/can-i-concurrently-write-different-slice-elements
 	resp := make([]string, concurrency.Count)
 
-	g, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel on first error
+	g, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel context on the first error
 	g.SetLimit(concurrency.TotalWorkers)
 
 	for i, request := range requests {
