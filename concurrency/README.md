@@ -43,7 +43,7 @@ go fn(x, y, z)
    - etc., e.g. HTTP server has connections limit.
 
 1. It should be possible to stop running goroutines, e.g. on service shutdown or HTTP timeout. Use one of next for cancellation:
-    - `context.Context`(preferable)
+    - `context.Context`(Context is cancelled or the deadline is exceeded. Preferable.)
     - stop channel(hard to use with other APIs, e.g. with some DB ORM or HTTP clients)
 
     Also write context aware code.
