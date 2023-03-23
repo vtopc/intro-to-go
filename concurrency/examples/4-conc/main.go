@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"concurrency"
@@ -13,14 +14,7 @@ import (
 func main() {
 	requests := concurrency.GenerateRequests(concurrency.Count)
 
-	r := panics.Try(func() {
-		DoAsync(context.TODO(), requests)
-	})
-
-	err := r.AsError()
-	if err != nil {
-		log.Printf("recovered: %s", err)
-	}
+	DoAsync(context.TODO(), requests)
 }
 
 func DoAsync(ctx context.Context, requests [][]byte) {
@@ -36,7 +30,16 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 		log.Printf("sending request #%d", id)
 
 		p.Go(func(c context.Context) (string, error) {
-			return Work(c, id, req)
+			var err error
+			var ret string
+			r := panics.Try(func() {
+				ret, err = Work(c, id, req)
+			})
+			if r != nil {
+				err = fmt.Errorf("recovered panic: %w", r.AsError())
+			}
+
+			return ret, err
 		})
 	}
 

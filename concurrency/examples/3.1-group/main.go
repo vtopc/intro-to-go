@@ -60,6 +60,10 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 }
 
 func Work(ctx context.Context, id int, req []byte, respChan chan<- string) {
+	// if id == 42 {
+	// 	panic("42")
+	// }
+
 	s := concurrency.Md5sum(req)
 
 	select {
