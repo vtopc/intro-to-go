@@ -26,7 +26,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	resultsWG.Add(1)
 	go getResults(respChan, &resultsWG)
 
-	g, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel on the first error
+	g, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel context on the first error
 	g.SetLimit(concurrency.TotalWorkers)
 
 	for i, request := range requests {
