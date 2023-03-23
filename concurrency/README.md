@@ -54,8 +54,8 @@ go fn(x, y, z)
 
    Use one of next:
    - `sync.WaitGroup`
-   - `context.Context` returned by goroutine spawner, e.g. [errgroup.WithContext](https://pkg.go.dev/golang.org/x/sync/errgroup#WithContext)
-     - ~~done channel~~(could wait only for one goroutine to stop)
+   - `context.Context` - returned by goroutine spawner, e.g. [errgroup.WithContext](https://pkg.go.dev/golang.org/x/sync/errgroup#WithContext)
+   - done channel - [example](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_never_start_a_goroutine_without_knowing_when_it_will_stop)
 
    See also: [when you spawn goroutines, make it clear when or whether they exit.](https://google.github.io/styleguide/go/decisions#goroutine-lifetimes)
 
