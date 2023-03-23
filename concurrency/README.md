@@ -19,7 +19,7 @@ go fn(x, y, z)
     Master Yoda
 
     e.g. there is no speed benefit in [this example](examples/2-workerpool/README.md) for **one** CPU,
-    and async solution consumes [50%](examples/2-workerpool/README.md#benchmarks)–[100%](examples/3-group/README.md#benchmarks) more memory.
+    and async solution consumes [50%](examples/2-workerpool/README.md#benchmarks)–[100%](examples/3.1-group/README.md#benchmarks) more memory.
 
     Another example:
     ```go
@@ -93,7 +93,7 @@ so call `mu.Unlock`, `wg.Wait` or `close(ch)` in defers.
 1. `wg.Add(...)` should be called before running goroutine.
 
 #### To sum up. The easiest ways.
-- either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with panic recovery, [e.g.](examples/3-group/main.go);
+- either use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with panic recovery, [e.g.](examples/3.1-group/main.go);
 
 - or use [sourcegraph/conc.WaitGroup](https://pkg.go.dev/github.com/sourcegraph/conc@v0.3.0#WaitGroup.WaitAndRecover) with semaphore.
 

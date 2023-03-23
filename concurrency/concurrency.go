@@ -4,12 +4,12 @@ import (
 	"crypto/md5"
 	"crypto/rand"
 	"fmt"
+	"runtime"
 )
 
-const (
-	Count        = 50
-	TotalWorkers = 5
-)
+const Count = 100
+
+var TotalWorkers = runtime.NumCPU()
 
 func GenerateRequests(length int) [][]byte {
 	res := make([][]byte, 0, length)
