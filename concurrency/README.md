@@ -40,7 +40,7 @@ go fn(x, y, z)
    - use [semaphore](https://pkg.go.dev/golang.org/x/sync/semaphore) or just some `make(chan struct{}, N)` before spawning a new goroutine. 
    - use pool from [conc](https://github.com/sourcegraph/conc) with `WithMaxGoroutines`
    - create [worker pool](https://gobyexample.com/worker-pools). Shouldn't be used in most cases since there would be hanging workers, that are doing nothing and spawning a new goroutine is quite cheap.
-   - etc.
+   - etc., e.g. HTTP server has connections limit.
 
 1. It should be possible to stop running goroutines, e.g. on service shutdown or HTTP timeout. Use one of next for cancellation:
     - `context.Context`(preferable)
