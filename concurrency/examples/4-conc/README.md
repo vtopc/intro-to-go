@@ -19,6 +19,7 @@ This is an example of [sourcegraph/conc](https://github.com/sourcegraph/conc).
 
 - ResultPool uses mutex for appending to the result slice, but could do it [concurrently](https://stackoverflow.com/questions/49879322/can-i-concurrently-write-different-slice-elements).
 - Too smart and not so flexible. Doesn't fit for batching or any kind of workers.
+- One more API to learn.
 
 ## Benchmarks
 
