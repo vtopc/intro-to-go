@@ -9,7 +9,7 @@ import (
 
 const Count = 100
 
-var TotalWorkers = runtime.NumCPU()
+var TotalWorkers = runtime.GOMAXPROCS(0) // or runtime.NumCPU()?
 
 func GenerateRequests(length int) [][]byte {
 	res := make([][]byte, 0, length)
