@@ -52,8 +52,8 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 func Work(ctx context.Context, id int, req []byte) (string, error) {
 	defer log.Printf("worker #%d: stopping\n", id)
 
-	// if true {
-	// 	panic("test")
+	// if id == 42 {
+	// 	panic("42")
 	// }
 
 	err := ctx.Err()
