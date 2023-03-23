@@ -44,7 +44,7 @@ go fn(x, y, z)
 
 1. It should be possible to stop running goroutines, e.g. on service shutdown or HTTP timeout. Use one of next for cancellation:
     - `context.Context`(preferable)
-    - ~~done channel~~(kinda legacy and hard to use with APIs)
+    - stop channel
 
     Also write context aware code.
 
