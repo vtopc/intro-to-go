@@ -34,6 +34,10 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	for i, req := range requests {
 		i, req := i, req // https://github.com/golang/go/wiki/CommonMistakes/#using-goroutines-on-loop-iterator-variables
 
+		if ctx.Err() != nil {
+			break
+		}
+
 		log.Printf("sending request #%d", i)
 
 		g.Go(func() (err error) {
