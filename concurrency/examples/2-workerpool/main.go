@@ -48,6 +48,12 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 }
 
 func Work(ctx context.Context, id int, wg *sync.WaitGroup, reqChan <-chan []byte, respChan chan<- string) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("recovered panic: %s", r)
+		}
+	}()
+
 	log.Printf("worker #%d: started\n", id)
 
 	for data := range reqChan {
