@@ -15,12 +15,14 @@ func main() {
 }
 
 func DoAsync(ctx context.Context, requests [][]byte) {
+	totalWorkers := concurrency.TotalWorkers
+
 	var wg sync.WaitGroup
 
 	// chan buffer should be tuned to the value when channels are not exhausted
 	//  and workers are not waiting for the input:
-	reqChan := make(chan []byte, concurrency.TotalWorkers)
-	respChan := make(chan string, concurrency.TotalWorkers)
+	reqChan := make(chan []byte, totalWorkers)
+	respChan := make(chan string, totalWorkers)
 
 	doneChan := make(chan struct{}, 1)
 
@@ -35,8 +37,8 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 
 	go getResults(respChan, doneChan)
 
-	wg.Add(concurrency.TotalWorkers)
-	for id := 1; id <= concurrency.TotalWorkers; id++ {
+	wg.Add(totalWorkers)
+	for id := 1; id <= totalWorkers; id++ {
 		// starting workers
 		go Work(ctx, id, &wg, reqChan, respChan)
 	}
