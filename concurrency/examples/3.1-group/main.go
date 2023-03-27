@@ -18,21 +18,21 @@ func main() {
 }
 
 func DoAsync(ctx context.Context, requests [][]byte) {
+	totalWorkers := concurrency.TotalWorkers
+
 	// chan buffer should be tuned to the value when channels are not exhausted
 	//  and workers are not waiting for the input:
-	respChan := make(chan string, concurrency.TotalWorkers)
+	respChan := make(chan string, totalWorkers)
 
 	var resultsWG sync.WaitGroup
 	resultsWG.Add(1)
 	go getResults(respChan, &resultsWG)
 
 	g, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel context on the first error
-	g.SetLimit(concurrency.TotalWorkers)
+	g.SetLimit(totalWorkers)
 
 	for i, req := range requests {
-		// https://github.com/golang/go/wiki/CommonMistakes/#using-goroutines-on-loop-iterator-variables
-		i := i
-		req := req
+		i, req := i, req // https://github.com/golang/go/wiki/CommonMistakes/#using-goroutines-on-loop-iterator-variables
 
 		log.Printf("sending request #%d", i)
 
