@@ -17,16 +17,14 @@ func main() {
 func DoAsync(ctx context.Context, requests [][]byte) {
 	totalWorkers := concurrency.TotalWorkers
 
-	var wg sync.WaitGroup
+	var workersWG, resultsWG sync.WaitGroup
 
 	// chan buffer should be tuned to the value when channels are not exhausted
 	//  and workers are not waiting for the input:
 	reqChan := make(chan []byte, totalWorkers)
 	respChan := make(chan string, totalWorkers)
 
-	doneChan := make(chan struct{}, 1)
-
-	go func() {
+	go func() { // requests producer
 		for i, request := range requests {
 			log.Printf("sending request #%d", i)
 
@@ -35,17 +33,18 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 		close(reqChan)
 	}()
 
-	go getResults(respChan, doneChan)
+	resultsWG.Add(1)
+	go getResults(&resultsWG, respChan)
 
-	wg.Add(totalWorkers)
+	workersWG.Add(totalWorkers)
 	for id := 1; id <= totalWorkers; id++ {
 		// starting workers
-		go Work(ctx, id, &wg, reqChan, respChan)
+		go Work(ctx, id, &workersWG, reqChan, respChan)
 	}
 
-	go resChanCloser(&wg, respChan)
+	go resChanCloser(&workersWG, respChan)
 
-	<-doneChan // blocking
+	resultsWG.Wait() // blocking
 }
 
 func Work(ctx context.Context, id int, wg *sync.WaitGroup, reqChan <-chan []byte, respChan chan<- string) {
@@ -76,7 +75,7 @@ func resChanCloser(wg *sync.WaitGroup, respChan chan<- string) {
 	close(respChan) // sending a "signal" to func getResults(), that there will be no more messages.
 }
 
-func getResults(respChan <-chan string, doneChan chan<- struct{}) {
+func getResults(wg *sync.WaitGroup, respChan <-chan string) {
 	batchSize := concurrency.Count
 	res := make([]string, 0, batchSize)
 
@@ -103,5 +102,5 @@ func getResults(respChan <-chan string, doneChan chan<- struct{}) {
 
 	// all results are saved
 
-	close(doneChan)
+	wg.Done()
 }
