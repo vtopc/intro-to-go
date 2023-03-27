@@ -29,12 +29,12 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	g, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel context on the first error
 	g.SetLimit(concurrency.TotalWorkers)
 
-	for i, request := range requests {
+	for i, req := range requests {
 		// https://github.com/golang/go/wiki/CommonMistakes/#using-goroutines-on-loop-iterator-variables
-		id := i
-		req := request
+		i := i
+		req := req
 
-		log.Printf("sending request #%d", id)
+		log.Printf("sending request #%d", i)
 
 		g.Go(func() (err error) {
 			defer func() {
@@ -43,7 +43,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 				}
 			}()
 
-			Work(ctx, id, req, respChan)
+			Work(ctx, i, req, respChan)
 
 			return nil
 		})
