@@ -53,8 +53,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 		})
 	}
 
-	err := g.Wait() // blocking
-	if err != nil {
+	if err := g.Wait(); err != nil { // blocking
 		fmt.Println("worker error:", err)
 	}
 
