@@ -22,18 +22,15 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 		WithContext(ctx).
 		WithMaxGoroutines(concurrency.TotalWorkers)
 
-	for i, request := range requests {
-		// https://github.com/golang/go/wiki/CommonMistakes/#using-goroutines-on-loop-iterator-variables
-		id := i
-		req := request
-
-		log.Printf("sending request #%d", id)
+	for i, req := range requests {
+		i, req := i, req // https://github.com/golang/go/wiki/CommonMistakes/#using-goroutines-on-loop-iterator-variables
+		log.Printf("sending request #%d", i)
 
 		p.Go(func(c context.Context) (string, error) {
 			var err error
 			var ret string
 			r := panics.Try(func() {
-				ret, err = Work(c, id, req)
+				ret, err = Work(c, i, req)
 			})
 			if r != nil {
 				err = fmt.Errorf("recovered panic: %w", r.AsError())
