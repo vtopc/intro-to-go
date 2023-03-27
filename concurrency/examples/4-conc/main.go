@@ -20,7 +20,8 @@ func main() {
 func DoAsync(ctx context.Context, requests [][]byte) {
 	p := pool.NewWithResults[string]().
 		WithContext(ctx).
-		WithMaxGoroutines(concurrency.TotalWorkers)
+		WithMaxGoroutines(concurrency.TotalWorkers).
+		WithCancelOnError()
 
 	for i, req := range requests {
 		i, req := i, req // https://github.com/golang/go/wiki/CommonMistakes/#using-goroutines-on-loop-iterator-variables
