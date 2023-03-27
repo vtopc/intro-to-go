@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"sync"
@@ -28,7 +29,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 	resultsWG.Add(1)
 	go getResults(respChan, &resultsWG)
 
-	g, _ := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel context on the first error
+	g, ctx := errgroup.WithContext(ctx) // use `errgroup.Group` literal if you don't need to cancel context on the first error
 	g.SetLimit(totalWorkers)
 
 	for i, req := range requests {
@@ -42,6 +43,10 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 					err = fmt.Errorf("recovered panic: %s", r)
 				}
 			}()
+
+			if i == 42 {
+				return errors.New("error-42")
+			}
 
 			Work(ctx, i, req, respChan)
 
@@ -71,7 +76,7 @@ func Work(ctx context.Context, id int, req []byte, respChan chan<- string) {
 		log.Printf("worker #%d: send: %s\n", id, s)
 
 	case <-ctx.Done():
-		log.Printf("worker #%d: stopping\n", id)
+		log.Printf("worker #%d: cancelling\n", id)
 		return
 	}
 }
