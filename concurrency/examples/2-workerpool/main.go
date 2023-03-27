@@ -42,7 +42,7 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 		go Work(ctx, id, &workersWG, reqChan, respChan)
 	}
 
-	go resChanCloser(&workersWG, respChan)
+	go respChanCloser(&workersWG, respChan)
 
 	resultsWG.Wait() // blocking
 }
@@ -73,7 +73,7 @@ func Work(ctx context.Context, id int, wg *sync.WaitGroup, reqChan <-chan []byte
 	wg.Done()
 }
 
-func resChanCloser(wg *sync.WaitGroup, respChan chan<- string) {
+func respChanCloser(wg *sync.WaitGroup, respChan chan<- string) {
 	wg.Wait() // goroutine is blocked
 
 	log.Println("all workers are done, closing respChan")
