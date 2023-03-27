@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log"
 	"sync"
@@ -44,9 +43,9 @@ func DoAsync(ctx context.Context, requests [][]byte) {
 				}
 			}()
 
-			if i == 42 {
-				return errors.New("error-42")
-			}
+			// if i == 42 {
+			// 	return errors.New("error-42")
+			// }
 
 			Work(ctx, i, req, respChan)
 
