@@ -7,5 +7,3 @@ import (
 type S struct {
 	i atomic.Pointer[int]
 }
-
-func main() {}
