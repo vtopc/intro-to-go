@@ -4,7 +4,7 @@
 
 Every function spawned with `go` keyword creates new goroutine, e.g.:
 ```go
-go fn(x, y, z)
+go fn(a, b, c)
 ```
 [Check a tour of Go](https://go.dev/tour/concurrency/1)
 
@@ -46,7 +46,7 @@ go fn(x, y, z)
     - `context.Context`(Context is cancelled or the deadline is exceeded. Preferable.)
     - stop channel(hard to use with other APIs, e.g. with some DB ORM or HTTP clients)
 
-    Also write context aware code.
+    Also write [context aware code](https://www.storj.io/blog/production-concurrency).
 
 1. [Never start a goroutine without knowing when it will stop](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_never_start_a_goroutine_without_knowing_when_it_will_stop).
 
@@ -100,7 +100,7 @@ so call `mu.Unlock`, `wg.Wait` or `close(ch)` in defers.
 ### Tips and tricks
 
 - Add [profiler labels](https://rakyll.org/profiler-labels/), this would help to debug and read stacktrace.
-- Use the race detector (`-race` flag) and `t.Parallel()` in unit tests.
+- Use the race detector (`-race` flag) and `t.Parallel()` in unit tests and subtests.
 - Use [uber-go/goleak](https://github.com/uber-go/goleak) to detect goroutine leaks in your tests.
 - You can [update pre-allocated slice concurrently](https://stackoverflow.com/questions/49879322/can-i-concurrently-write-different-slice-elements).
 
