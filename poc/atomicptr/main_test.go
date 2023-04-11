@@ -18,7 +18,7 @@ func TestAtomicPointer(t *testing.T) {
 	s2.i.Store(v)
 	require.Equal(t, 1, *s2.i.Load())
 
-	s1.i.Store(ptr[int](2))
+	s1.i.Store(ptr(2))
 	assert.Equal(t, 2, *s1.i.Load())
 	assert.Equal(t, 2, *s2.i.Load())
 }
