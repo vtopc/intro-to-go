@@ -46,6 +46,7 @@ go fn(a, b, c)
     - `context.Context`(Context is cancelled or the deadline is exceeded. Preferable.)
     - stop channel(hard to use with other APIs, e.g. with some DB ORM or HTTP clients)
 
+    Kind a [Circuit Breaker](https://microservices.io/patterns/reliability/circuit-breaker.html).
     Also write [context aware code](https://www.storj.io/blog/production-concurrency).
 
 1. [Never start a goroutine without knowing when it will stop](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_never_start_a_goroutine_without_knowing_when_it_will_stop).
