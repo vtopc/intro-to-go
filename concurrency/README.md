@@ -47,7 +47,34 @@ go fn(a, b, c)
     - stop channel(hard to use with other APIs, e.g. with some DB ORM or HTTP clients)
 
     Kind a [Circuit Breaker](https://microservices.io/patterns/reliability/circuit-breaker.html).
+
     Also write [context aware code](https://www.storj.io/blog/production-concurrency).
+
+   HTTP timeout example:
+    ```go
+    func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+        ctx := r.Context() // http.Server should have timeouts
+    
+        var entity Entity
+        _ = json.NewDecoder(r.Body).Decode(&entity) // Don’t forget to check the error and close the body
+    
+        group, _ := errgroup.WithContext(ctx)
+        group.Go(func() (err error) {
+            return h.db1.CreateEntity(ctx, entity) // a lot of methods takes context, not stop chan 
+        })
+        group.Go(func() (err error) {
+            return h.db2.TransactionLog(ctx, entity)
+        })
+    
+        err := group.Wait() // blocking
+        if err != nil {
+            http.Error(w, "db error", http.StatusInternalServerError)
+            return
+        }
+    
+        w.WriteHeader(http.StatusNoContent)
+    }
+    ```
 
 1. [Never start a goroutine without knowing when it will stop](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_never_start_a_goroutine_without_knowing_when_it_will_stop).
 
