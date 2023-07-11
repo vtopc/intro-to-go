@@ -24,7 +24,6 @@ func (n Net) Learn(data Data) {
 
 	label: // TODO: func
 		try++
-		node.generation = try
 
 		fmt.Printf("learning node #%d(%+v), try #%d\n", i, node, try)
 

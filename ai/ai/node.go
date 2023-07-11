@@ -21,9 +21,8 @@ const (
 type Nodes []Node
 
 type Node struct {
-	action     Action
-	constant   uint8
-	generation int
+	action   Action
+	constant uint8
 }
 
 func NewNode() Node {
