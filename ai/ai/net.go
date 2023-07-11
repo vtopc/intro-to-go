@@ -24,18 +24,24 @@ func (n Net) Learn(data Data) {
 
 	label: // TODO: func
 		try++
-		fmt.Printf("learning node #%d(%+v), try #%d\n", i, *node, try)
+		node.generation = try
+
+		fmt.Printf("learning node #%d(%+v), try #%d\n", i, node, try)
 
 		for _, d := range data {
 			got, err := node.Act(d.Input)
 			if err != nil {
 				fmt.Printf("learn: got error: %s\n", err)
 				node = NewNode()
+				n.nodes[i] = node
+
 				goto label
 			}
 
 			if got != d.Want {
 				node = NewNode()
+				n.nodes[i] = node
+
 				goto label
 			}
 		}
@@ -44,16 +50,21 @@ func (n Net) Learn(data Data) {
 }
 
 func (n Net) Test(data Data) {
+	passed := true
 	for i, node := range n.nodes {
 		for _, d := range data {
 			got, err := node.Act(d.Input)
 			if err != nil {
 				fmt.Printf("test node #%d: got error: %s\n", i, err)
+				passed = false
 			}
 
 			if got != d.Want {
-				fmt.Printf("test node #%d: expected '%d', but got '%d'\n", i, d.Want, got)
+				fmt.Printf("test node #%d(%+v): expected '%d', but got '%d'\n", i, node, d.Want, got)
+				passed = false
 			}
 		}
 	}
+
+	fmt.Println("test passed:", passed)
 }

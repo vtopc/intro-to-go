@@ -18,22 +18,23 @@ const (
 	// Sub ?
 )
 
-type Nodes []*Node
+type Nodes []Node
 
 type Node struct {
-	action   Action
-	constant uint8
+	action     Action
+	constant   uint8
+	generation int
 }
 
-func NewNode() *Node {
-	return &Node{
+func NewNode() Node {
+	return Node{
 		action: Action(rand.Int31n(4) + 1),
 		// constant: uint8(rand.Int31n(math.MaxInt8 + 1)),
 		constant: uint8(rand.Int31n(2)), // 0 or 1
 	}
 }
 
-func (n *Node) Act(v uint8) (uint8, error) {
+func (n Node) Act(v uint8) (uint8, error) {
 	switch n.action {
 	case Not:
 		return ^v, nil
