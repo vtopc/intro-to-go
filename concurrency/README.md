@@ -162,7 +162,7 @@ Channels are a typed conduit through which you can send and receive messages.
 
 1. Don't make huge buffered channels. Channel is just a [data buffer](https://en.wikipedia.org/wiki/Data_buffer),
 don't try to feet all results there(you would either make it too small and block on writing, or 
-make it to big and use redundant memory).
+make it too big and use redundant memory).
 
 1. Channel consumer should write values into DB/cache/file/socket/map/slice/other data structures.
 
