@@ -46,8 +46,6 @@ go fn(a, b, c)
     - `context.Context`(Context is cancelled or the deadline is exceeded. Preferable.)
     - stop channel(hard to use with other APIs, e.g. with some DB ORM or HTTP clients)
 
-    Kind a [Circuit Breaker](https://microservices.io/patterns/reliability/circuit-breaker.html).
-
     Also write [context aware code](https://www.storj.io/blog/production-concurrency).
 
    HTTP timeout example:
