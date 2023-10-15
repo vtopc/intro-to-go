@@ -7,6 +7,6 @@ import (
 )
 
 func Test_staticcheck(t *testing.T) {
-	err := staticcheck()
+	err := staticcheck1()
 	require.Error(t, err)
 }
