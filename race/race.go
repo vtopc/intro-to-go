@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"time"
 )
 
@@ -18,6 +19,29 @@ func b() {
 func race() {
 	go a()
 	go b()
+}
+
+// data race in not recovered
+func raceWithRecover() {
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				log.Printf("recovered panic in a: %s", r)
+			}
+		}()
+
+		a()
+	}()
+
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				log.Printf("recovered panic in b: %s", r)
+			}
+		}()
+
+		b()
+	}()
 }
 
 func main() {
