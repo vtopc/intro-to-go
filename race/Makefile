@@ -1,6 +1,6 @@
 .PHONY: test
 test:
-	go test ./... -count=100000
+	go test ./... -count=1000000
 
 .PHONY: run
 run:

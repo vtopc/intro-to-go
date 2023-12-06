@@ -6,23 +6,23 @@ import (
 	"time"
 )
 
-var x = make(map[string]int) // shared(package) variable
+type T map[string]int
 
-func a() {
+func a(x T) {
 	x["a"] = 1
 }
 
-func b() {
+func b(x T) {
 	x["b"] = 2
 }
 
-func race() {
-	go a()
-	go b()
+func race(x T) {
+	go a(x)
+	go b(x)
 }
 
 // data race in not recovered
-func raceWithRecover() {
+func raceWithRecover(x T) {
 	go func() {
 		defer func() {
 			if r := recover(); r != nil {
@@ -30,7 +30,7 @@ func raceWithRecover() {
 			}
 		}()
 
-		a()
+		a(x)
 	}()
 
 	go func() {
@@ -40,12 +40,13 @@ func raceWithRecover() {
 			}
 		}()
 
-		b()
+		b(x)
 	}()
 }
 
 func main() {
-	race()
+	x := make(T)
+	race(x)
 	time.Sleep(time.Nanosecond)
 	fmt.Println(x)
 }

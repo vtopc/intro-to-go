@@ -3,9 +3,11 @@ package main
 import "testing"
 
 func Test_race(t *testing.T) {
-	race()
+	x := make(T)
+	race(x)
 }
 
 func Test_raceWithRecover(t *testing.T) {
-	raceWithRecover()
+	x := make(T)
+	raceWithRecover(x)
 }
