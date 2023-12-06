@@ -8,4 +8,4 @@ run:
 
 .PHONY: run-race
 run-race:
-	go run -race race.go
+	go run -race race_map.go
