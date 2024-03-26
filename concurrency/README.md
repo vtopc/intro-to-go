@@ -34,6 +34,8 @@ go fn(a, b, c)
     ```go
     serve()
     ```
+   
+    Also, [Leave concurrency to the caller](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_leave_concurrency_to_the_caller)
 
 1. Make sure, that there would be a limited amount of running goroutines. Use one of next:
    - use [errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) with [SetLimit()](https://pkg.go.dev/golang.org/x/sync/errgroup#Group.SetLimit)
@@ -158,9 +160,14 @@ Channels are a typed conduit through which you can send and receive messages.
 
     [Understanding Real-World Concurrency Bugs in Go](https://songlh.github.io/paper/go-study.pdf)
 
+1. [Do not send into closed channel](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_a_send_to_a_closed_channel_panics). However, reading from closed channel is OK.
+
+1. [Do not send to or receive from a nil channel it will block forever.](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_channel_axioms)
+
 1. Don't make huge buffered channels. Channel is just a [data buffer](https://en.wikipedia.org/wiki/Data_buffer),
 don't try to feet all results there(you would either make it too small and block on writing, or 
 make it too big and use redundant memory).
+[Prefer channels with a size of zero or one. Most other sizes are guesses.](https://dave.cheney.net/practical-go/presentations/gophercon-singapore-2019.html#_prefer_channels_with_a_size_of_zero_or_one)
 
 1. Channel consumer should write values into DB/cache/file/socket/map/slice/other data structures.
 
@@ -168,10 +175,6 @@ make it too big and use redundant memory).
 
 1. Channel should be closed once either by the producer(if it's one)
 or with the help of `sync.WaitGroup`/`sync.Once`(if there are many producers).
-
-1. Do not write into closed channel. However, reading from closed channel is OK.
-
-1. Do not send to or receive from a nil channel it will block forever.
 
 ## More
 
