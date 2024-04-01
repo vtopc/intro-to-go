@@ -46,7 +46,7 @@ go fn(a, b, c)
 
 1. It should be possible to stop running goroutines, e.g. on service shutdown or HTTP timeout. Use one of next for cancellation:
     - `context.Context`(Context is cancelled or the deadline is exceeded. Preferable.)
-    - stop channel(hard to use with other APIs, e.g. with some DB ORM or HTTP clients)
+    - stop channel(kinda legacy solution and hard to use with other APIs, e.g. with some DB ORM or HTTP clients)
 
     Also write [context aware code](https://www.storj.io/blog/production-concurrency).
 
