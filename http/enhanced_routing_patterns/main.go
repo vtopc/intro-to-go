@@ -6,7 +6,7 @@ import (
 )
 
 func handleWeatherGet(w http.ResponseWriter, r *http.Request) {
-	_, _ = w.Write([]byte(r.PathValue("city")))
+	_, _ = w.Write([]byte(r.PathValue("city") + "\n"))
 }
 
 // curl -i -X GET localhost:8080/api/weather/London
