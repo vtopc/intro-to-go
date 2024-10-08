@@ -19,5 +19,5 @@ func main() {
 
 	s[0] = 100500
 
-	fmt.Println("s2: ", s2)
+	fmt.Println("s2: ", s2) // same underlying array
 }
