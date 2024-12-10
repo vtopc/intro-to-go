@@ -11,20 +11,20 @@ var (
 	input  = getRandomElements()
 )
 
-func Benchmark_sumElements(b *testing.B) {
+func Benchmark_sumValueElements(b *testing.B) {
 	var local int
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		local = sumElements(input)
+		local = sumValueElements(input)
 	}
 	global = local
 }
 
-func Benchmark_sumByIndex(b *testing.B) {
+func Benchmark_sumValuesByIndex(b *testing.B) {
 	var local int
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		local = sumByIndex(input)
+		local = sumValuesByIndex(input)
 	}
 	global = local
 }

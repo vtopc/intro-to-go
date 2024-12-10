@@ -5,7 +5,7 @@ type S struct {
 	j [1024]byte
 }
 
-func sumElements(input []S) int {
+func sumValueElements(input []S) int {
 	sum := 0
 	for _, elem := range input {
 		sum += elem.i
@@ -14,7 +14,7 @@ func sumElements(input []S) int {
 	return sum
 }
 
-func sumByIndex(input []S) int {
+func sumValuesByIndex(input []S) int {
 	sum := 0
 	for i := 0; i < len(input); i++ {
 		sum += input[i].i
