@@ -15,7 +15,7 @@ func interfaces(dd []Duration) {
 	fmt.Println(dd)
 }
 
-func generics(dd Durations[time.Duration]) { // what's the point?
+func generics[T Duration](dd Durations[T]) {
 	fmt.Println(dd)
 }
 
