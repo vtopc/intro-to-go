@@ -1,5 +1,7 @@
 package errs
 
-func errcheck() {
+func errcheck() error {
 	fnWithError()
+
+	return nil
 }
