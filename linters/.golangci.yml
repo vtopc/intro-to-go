@@ -95,9 +95,6 @@ linters-settings:
       - github.com/pkg/errors: 'Deprecated: use standard "errors" instead.'
 
   stylecheck:
-    # Select the Go version to target.
-    # Default: 1.13
-    go: "1.17"
     # https://staticcheck.io/docs/options#checks
     checks: ["all"]
 

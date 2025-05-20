@@ -2,6 +2,7 @@ package errs
 
 import (
 	"errors"
+	"net/http"
 )
 
 func fnWithError() error {
@@ -10,4 +11,8 @@ func fnWithError() error {
 
 func fnNoError() error {
 	return nil
+}
+
+func fnWithNilAndError() (*http.Response, error) {
+	return nil, errors.New("some error")
 }
