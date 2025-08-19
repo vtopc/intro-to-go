@@ -33,4 +33,7 @@ BenchmarkUnmarshalMapIface-4             	  248125	      4669 ns/op	    1582 B/o
 BenchmarkUnmarshalStruct-4               	  585271	      2054 ns/op	     304 B/op	       6 allocs/op
 BenchmarkSetWriteIface-4                 	45962313	        24.35 ns/op	       0 B/op	       0 allocs/op
 BenchmarkSetWriteString-4                	127555977	         9.495 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMapLookup2000Elems-4            	194989315	         6.028 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSliceLookup2000ElemsAvg-4       	 4327219	       272.6 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSliceLookup2000ElemsWorst-4     	  549072	      2188 ns/op	       0 B/op	       0 allocs/op
 ```
