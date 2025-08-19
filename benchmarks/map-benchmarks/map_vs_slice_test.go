@@ -15,8 +15,11 @@ var (
 var ok bool
 
 func init() {
-	mapData = make(map[string]int, 2000)
-	for i := 0; i < 2000; i++ {
+	const length = 2_000
+
+	mapData = make(map[string]int, length)
+	sliceData = make([]string, 0, length)
+	for i := 0; i < 1000; i++ {
 		key := "key" + strconv.Itoa(i)
 		sliceData = append(sliceData, key)
 		mapData[key] = i
