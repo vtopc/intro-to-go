@@ -11,6 +11,7 @@ var (
 	mapData   map[string]int
 )
 
+// TODO(go1.24+): not needed https://go.dev/blog/testing-b-loop
 // Global variable for Benchmarking - https://itnext.io/the-top-10-most-common-mistakes-ive-seen-in-go-projects-4b79d4f6cd65
 var ok bool
 
